@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multichain - Cross-chain Router</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <!-- Top Banner -->
+    <div class="top-banner" id="topBanner">
+        <span>Multichain is formerly known as Anyswap</span>
+        <a href="https://multichain.org" target="_blank">https://multichain.org</a>
+        <button class="close-banner" onclick="closeBanner()">×</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <!-- Logo -->
+            <div class="logo">
+                <!-- Reemplazando SVG y texto por imágenes dinámicas según tema -->
+                <img id="logoImage" src="https://i.ibb.co/5gfKPF2S/multichain-logo-noche.png" alt="Multichain" class="logo-image">
+            </div>
+
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="#" class="nav-link active">Router</a>
+                <a href="#" class="nav-link">Pool</a>
+                <a href="#" class="nav-link">Farms</a>
+                <a href="#" class="nav-link">veMULTI</a>
+                <a href="#" class="nav-link">NFT</a>
+                <a href="#" class="nav-link">History</a>
+                <button class="nav-more">⋯</button>
+            </nav>
+
+            <!-- Right Section -->
+            <div class="header-right">
+                <!-- Network Selector -->
+                <div class="network-selector" onclick="toggleNetworkModal()">
+                    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="network-icon">
+                    <span>Ethereum</span>
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <!-- Connect Wallet Button -->
+                <button class="connect-wallet-btn" onclick="toggleWalletModal()">
+                    Connect to a wallet
+                </button>
+
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 2V4M10 16V18M18 10H16M4 10H2M15.66 4.34L14.24 5.76M5.76 14.24L4.34 15.66M15.66 15.66L14.24 14.24M5.76 5.76L4.34 4.34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Title -->
+            <div class="page-header">
+                <h1>Crosschain</h1>
+                <button class="settings-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10.343 1.343L9.657 2.657C9.343 3.343 8.657 3.657 8 3.657H7C6.448 3.657 6 4.105 6 4.657V5.657C6 6.314 5.686 7 5 7.314L3.686 8C3 8.314 2.686 9 2.686 9.657V10.343C2.686 11 3 11.686 3.686 12L5 12.686C5.686 13 6 13.686 6 14.343V15.343C6 15.895 6.448 16.343 7 16.343H8C8.657 16.343 9.343 16.657 9.657 17.343L10.343 18.657C11 19.343 11.686 19.657 12.343 19.657H13.657C14.314 19.657 15 19.343 15.686 18.657L16.343 17.343C16.657 16.657 17.343 16.343 18 16.343H19C19.552 16.343 20 15.895 20 15.343V14.343C20 13.686 19.686 13 19 12.686L17.686 12C17 11.686 16.686 11 16.686 10.343V9.657C16.686 9 17 8.314 17.686 8L19 7.314C19.686 7 20 6.314 20 5.657V4.657C20 4.105 19.552 3.657 19 3.657H18C17.343 3.657 16.657 3.343 16.343 2.657L15.657 1.343C15 0.657 14.314 0.343 13.657 0.343H12.343C11.686 0.343 11 0.657 10.343 1.343Z" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Swap Interface -->
+            <div class="swap-container">
+                <!-- From Section -->
+                <div class="swap-section from-section">
+                    <div class="section-header">
+                        <span class="section-label">From</span>
+                        <span class="balance">Balance: -</span>
+                    </div>
+                    <div class="input-row">
+                        <input type="text" class="amount-input" placeholder="0.0" value="0.0">
+                        <div class="token-selector" onclick="toggleTokenModal('from')">
+                            <div class="token-placeholder">
+                                <span class="question-mark">?</span>
+                            </div>
+                            <span class="token-text">Select a token</span>
+                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="network-badge">
+                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="network-badge-icon">
+                            <span>mainnet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Swap Arrow -->
+                <div class="swap-arrow-container">
+                    <button class="swap-arrow" onclick="swapTokens()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 1V15M8 15L3 10M8 15L13 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="send-to-btn">+ Send To</button>
+                </div>
+
+                <!-- To Section -->
+                <div class="swap-section to-section">
+                    <div class="section-header">
+                        <span class="section-label">To</span>
+                        <span class="balance">Balance: -</span>
+                    </div>
+                    <div class="input-row">
+                        <input type="text" class="amount-input" placeholder="0.0" value="0.0">
+                        <div class="token-selector" onclick="toggleTokenModal('to')">
+                            <div class="token-placeholder">
+                                <span class="question-mark">?</span>
+                            </div>
+                            <span class="token-text">Select a token</span>
+                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="network-badge">
+                            <div class="network-placeholder">
+                                <span class="question-mark">?</span>
+                            </div>
+                            <span>Select Network</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connect Wallet Button -->
+                <button class="main-connect-btn" onclick="toggleWalletModal()">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Network Selection Modal -->
+    <div class="modal-overlay" id="networkModal" onclick="closeNetworkModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Select Network</h3>
+                <button class="close-btn" onclick="closeNetworkModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="network-list">
+                    <div class="network-item active" onclick="selectNetwork('ethereum')">
+                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum">
+                        <span>Ethereum</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('optimism')">
+                        <img src="https://cryptologos.cc/logos/optimism-ethereum-op-logo.png" alt="Optimism">
+                        <span>Optimism</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('polygon')">
+                        <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon">
+                        <span>Polygon</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('arbitrum')">
+                        <img src="https://cryptologos.cc/logos/arbitrum-arb-logo.png" alt="Arbitrum">
+                        <span>Arbitrum</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('fantom')">
+                        <img src="https://cryptologos.cc/logos/fantom-ftm-logo.png" alt="Fantom">
+                        <span>Fantom</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('avalanche')">
+                        <img src="https://cryptologos.cc/logos/avalanche-avax-logo.png" alt="Avalanche">
+                        <span>Avalanche</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('gnosis')">
+                        <img src="https://cryptologos.cc/logos/gnosis-gno-logo.png" alt="Gnosis">
+                        <span>Gnosis</span>
+                    </div>
+                    <div class="network-item" onclick="selectNetwork('bnb')">
+                        <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB">
+                        <span>BNB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Connection Modal -->
+    <div class="modal-overlay" id="walletModal" onclick="closeWalletModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Connect Wallet</h3>
+                <button class="close-btn" onclick="closeWalletModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="wallet-list">
+                    <div class="wallet-item" onclick="connectWallet('metamask')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask">
+                        <span>MetaMask</span>
+                    </div>
+                    <div class="wallet-item" onclick="connectWallet('walletconnect')">
+                        <img src="https://walletconnect.com/walletconnect-logo.svg" alt="WalletConnect">
+                        <span>WalletConnect</span>
+                    </div>
+                    <div class="wallet-item" onclick="connectWallet('coinbase')">
+                        <img src="https://www.coinbase.com/img/favicon.ico" alt="Coinbase Wallet">
+                        <span>Coinbase Wallet</span>
+                    </div>
+                    <div class="wallet-item" onclick="connectWallet('trust')">
+                        <img src="https://trustwallet.com/assets/images/favicon.ico" alt="Trust Wallet">
+                        <span>Trust Wallet</span>
+                    </div>
+                    <div class="wallet-item" onclick="connectWallet('phantom')">
+                        <img src="https://phantom.app/img/phantom-logo.png" alt="Phantom">
+                        <span>Phantom</span>
+                    </div>
+                    <div class="wallet-item" onclick="connectWallet('binance')">
+                        <img src="https://www.binance.com/favicon.ico" alt="Binance Wallet">
+                        <span>Binance Wallet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Token Selection Modal -->
+    <div class="modal-overlay" id="tokenModal" onclick="closeTokenModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Select Token</h3>
+                <button class="close-btn" onclick="closeTokenModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search name or paste address">
+                </div>
+                <div class="token-list">
+                    <div class="token-item" onclick="selectToken('ETH')">
+                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH">
+                        <div class="token-info">
+                            <span class="token-name">Ethereum</span>
+                            <span class="token-symbol">ETH</span>
+                        </div>
+                        <span class="token-balance">0</span>
+                    </div>
+                    <div class="token-item" onclick="selectToken('USDT')">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
+                        <div class="token-info">
+                            <span class="token-name">Tether USD</span>
+                            <span class="token-symbol">USDT</span>
+                        </div>
+                        <span class="token-balance">0</span>
+                    </div>
+                    <div class="token-item" onclick="selectToken('USDC')">
+                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC">
+                        <div class="token-info">
+                            <span class="token-name">USD Coin</span>
+                            <span class="token-symbol">USDC</span>
+                        </div>
+                        <span class="token-balance">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
