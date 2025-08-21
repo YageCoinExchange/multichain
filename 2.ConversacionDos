@@ -1,0 +1,1178 @@
+gos
+Uploaded image: image.png
+index.html
+You said: @YageCoinExchange/multichain/files/index.html NO ME SALE LOS LOGOS QUE
+@YageCoinExchange/multichain/files/index.html NO ME SALE LOS LOGOS QUE ESTAS EN LOS LINKS EN LA PAGINA DENTRO DE LOS CIRCULOS 
+Copilot said: ¡Hola! Según la captura y el código,
+¡Hola! Según la captura y el código, los logos de las redes no aparecen dentro de los círculos, aunque los links están bien. Esto suele pasar por 3 razones principales:
+
+1. Los links de las imágenes están mal escritos o no existen
+En tu código, algunos links están mal escritos o no existen, por ejemplo:
+
+"https://i.ibb.co/WNjcgb09/ethereum32x32.jpg" → El enlace correcto sería: "https://i.ibb.co/WNjcgb0/ethereum32x32.jpg"
+"https://i.ibb.co/Y5W40LL/dot32x2.jpg" → El enlace correcto debería ser: "https://i.ibb.co/Y5W40LL/dot32x32.jpg"
+2. El tamaño del contenedor oculta la imagen
+A veces el width y height del <img> son muy pequeños o hay un error de CSS. En tu caso, el tamaño parece correcto.
+
+3. El valor del src del <img> nunca se actualiza correctamente
+Si el valor del <img src=""> es vacío, no se mostrará nada. Pero en tu código, al cargar la página, debería aparecer la imagen.
+
+¿Cómo solucionarlo?
+1. Corrige los links de las imágenes
+Aquí tienes los links corregidos para los íconos más comunes (reemplaza los que están mal en tu objeto chainIcons):
+
+js
+const chainIcons = {
+  bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+  eth: "https://i.ibb.co/WNjcgb0/ethereum32x32.jpg",  // CORREGIDO
+  polygon: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+  arbitrum: "https://i.ibb.co/jZTNW78Z/arbitrum32x32.jpg",
+  fantom: "https://i.ibb.co/nq0Kmc8z/logo-fantom.jpg",
+  avalanche: "https://i.ibb.co/KjcdtJ2L/avalanche32x32.jpg",
+  gnosis: "https://i.ibb.co/svQd3jvL/gnosis32x32.jpg",
+  dot: "https://i.ibb.co/Y5W40LL/dot32x32.jpg", // CORREGIDO
+  sol: "https://i.ibb.co/yF4BY4Mb/solana32x32.jpg",
+  ton: "https://i.ibb.co/G3NmrwXc/ton32x32.jpg",
+  sui: "https://i.ibb.co/8nXLsBqB/sui32x32.jpg",
+  aptos: "https://i.ibb.co/0RHpfPZt/aptos32x32.jpg",
+  ada: "https://i.ibb.co/HcsQyRf/cardano32x32.jpg",
+  btc: "https://i.ibb.co/F19ymGW/btc32x32.jpg",
+  doge: "https://i.ibb.co/vCM2hw6D/Dogecoin32x32.png",
+  matic: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+  near: "https://i.ibb.co/qYmw4KQX/near32x32.png"
+};
+2. Verifica que las imágenes cargan bien
+Prueba abriendo los links directamente en tu navegador. Si abre la imagen, el link es correcto.
+
+3. Reemplaza en tu código los links mal escritos
+Haz este reemplazo en tu archivo, luego recarga la página y limpia caché (Ctrl+F5).
+
+4. Si usas WordPress/Elementor, prueba poner el HTML en “Modo HTML puro”
+Algunos constructores bloquean recursos externos, prueba poner el HTML en modo HTML puro y no dentro de un bloque “elemento”.
+
+Resumen del FIX
+Corrige los links mal escritos.
+Limpia caché del navegador y del servidor (si tienes un plugin tipo “WP Fastest Cache”).
+Asegúrate de que el HTML no esté bloqueado por el editor visual.
+¿Quieres que te pase el bloque de código listo para copiar y pegar? ¿O quieres que te ayude a revisar si hay más problemas en el código?
+
+Uploaded image: image.png
+You said: YA CAMBIE ESO EN EL CODIGO Y
+YA CAMBIE ESO EN EL CODIGO Y NO FUNCIONA NO SE VEN LOS LOGOS 
+Copilot said: Gracias por la captura. Si ya corregiste
+Gracias por la captura. Si ya corregiste los links y aún así NO aparecen los logos, aquí tienes posibles causas y soluciones específicas:
+
+1. El link de la imagen NO funciona
+Prueba abriendo el link de la imagen BSC en otra pestaña:
+https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg
+
+¿Se ve la imagen? Si no se ve, el link está caído o mal.
+
+2. El HTML está siendo bloqueado
+Si editas desde Elementor o WordPress, a veces el editor bloquea imágenes externas por seguridad.
+Solución:
+
+Prueba subiendo las imágenes a tu propia biblioteca de medios WordPress y usa esas URLs.
+3. El JavaScript no se está ejecutando correctamente
+Si el código JS no se ejecuta, los logos no se asignan.
+Verifica en la consola del navegador (F12 > Consola) si hay errores como:
+
+“Uncaught ReferenceError”
+“Failed to load resource”
+4. El HTML y JS están duplicados o sobreescritos
+Si tienes el mismo código dos veces o el HTML está cargando desde dos fuentes, los cambios no se ven.
+
+Revisión Rápida
+Prueba pegando este código mínimo en un archivo HTML fuera de WordPress:
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test logos</title>
+</head>
+<body>
+  <div>
+    <img id="bscLogo" src="https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg">
+  </div>
+  <script>
+    // Solo para test
+    document.getElementById('bscLogo').src = "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg";
+  </script>
+</body>
+</html>
+¿Se ve la imagen?
+
+Si SÍ: El problema es de tu WordPress o del código JS.
+Si NO: El link no sirve o tu navegador bloquea imágenes externas.
+Solución Recomendada
+Sube los logos a tu WordPress (Medios > Añadir nuevo).
+Copia la URL que te da WordPress.
+En tu objeto chainIcons, usa esos links en vez de los de ibb.co.
+Si sigue sin funcionar:
+Mándame el error exacto que sale en la consola del navegador.
+O dime si en el archivo HTML puro sí ves los logos, así te ayudo a integrar con WordPress correctamente.
+¿Quieres que te pase el bloque de código con todos los enlaces cambiados a WordPress? ¿O puedes probar el test HTML y decirme el resultado?
+
+You said: TE PASO la URL que te
+TE PASO  la URL que te da WordPress? Y LOS REEMPLAZO POR EXISTENTES EN EL ARCHIVO ?
+Copilot said: ¡Sí! Es la mejor solución para asegurar
+¡Sí! Es la mejor solución para asegurar que los logos SIEMPRE se vean en tu web WordPress.
+
+¿Cómo hacerlo?
+Sube cada logo a tu WordPress:
+Ve a Medios > Añadir nuevo > Sube cada imagen de los logos (ejemplo: BSC, ETH, etc).
+
+Copia la URL de cada imagen subida:
+Haz clic en cada imagen subida y copia la URL que WordPress te da.
+
+Reemplaza las URLs en tu archivo index.html
+En tu objeto chainIcons, pon la URL de WordPress en vez de la de ibb.co, por ejemplo:
+
+js
+const chainIcons = {
+  bsc: "https://tudominio.com/wp-content/uploads/2025/08/BSCBNB32x32.jpg",
+  eth: "https://tudominio.com/wp-content/uploads/2025/08/ethereum32x32.jpg",
+  // ... y así para cada una
+};
+Guarda los cambios y recarga la página
+Recuerda limpiar caché de WordPress y navegador.
+¿Quieres que te ayude a hacer la lista de enlaces o prefieres subirlas y pegarme las URLs para armarte el bloque de código listo?
+¡Pásame las URLs y te preparo el código listo para reemplazar!
+
+Uploaded image: image.png
+You said: <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>yagecoin swap bridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .headerbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      height: 56px;
+      background: transparent;
+      position: relative;
+    }
+    .app-logo {
+      height: 42px;
+      margin: 8px 0 8px 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .wallet-connect-btn {
+      background: #c2ff09;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 22px;
+      margin: 10px 24px 10px 0;
+      cursor: pointer;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 16px 0 #c2ff0933;
+    }
+    .wallet-connect-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .main-wrap {
+      min-height: calc(100vh - 56px);
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swap-card {
+      background: #232323;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 #0008;
+      max-width: 430px;
+      width: 98vw;
+      margin: 48px 0 0 0;
+      padding: 42px 35px 32px 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 290px;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.98);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .swap-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .swap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 24px;
+    }
+    .swap-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swap-circ {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      box-shadow: 0 0 16px 0 #00ffe9bb;
+      border: 2.5px solid #00ffe9cc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .swap-circ.to {
+      box-shadow: 0 0 16px 0 #c2ff0999;
+      border: 2.5px solid #c2ff09;
+    }
+    .swap-circ-inner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232323;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 7px #0009;
+      overflow: hidden;
+    }
+    .swap-circ-inner img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #fff;
+      display: block !important;
+      border: none;
+      opacity: 1;
+    }
+    .swap-circ-label {
+      font-size: 0.87rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* CHAIN SELECT - NEGRO CON TEXTO BLANCO */
+    .chain-select {
+      width: 100%;
+      background: #111 !important;
+      color: #fff !important;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.17s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    .chain-select:hover,
+    .chain-select:focus {
+      border-color: #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .chain-select option {
+      background: #111 !important;
+      color: #fff !important;
+      padding: 8px;
+    }
+
+    /* INPUTS - NEGRO CON TEXTO BLANCO */
+    .swap-amount-label, .swap-dest-label {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 4px;
+      margin-top: 9px;
+      font-weight: 500;
+      text-align: left;
+    }
+    .swap-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .swap-amount-input,
+    .swap-dest-input {
+      flex: 1;
+      background: #111 !important;
+      border: none;
+      border-bottom: 2px solid #444;
+      color: #fff !important;
+      font-size: 1.23rem;
+      font-family: inherit;
+      padding: 12px 0 12px 10px;
+      margin: 0;
+      outline: none;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .swap-amount-input:focus,
+    .swap-dest-input:focus {
+      border-bottom: 2px solid #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .swap-amount-input::placeholder,
+    .swap-dest-input::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+    .swap-max-btn {
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      margin-left: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .swap-max-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .swap-min-row {
+      font-size: 0.90rem;
+      color: #bbb;
+      margin-bottom: 12px;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .swap-btn {
+      width: 100%;
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 13px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      margin-bottom: 2px;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 24px 0 #c2ff0935;
+    }
+    .swap-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="headerbar">
+    <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
+    <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
+  </div>
+  <div class="main-wrap">
+    <form class="swap-card" autocomplete="off" onsubmit="event.preventDefault()">
+      <div class="swap-title">Send</div>
+      <div class="swap-row">
+        <!-- FROM -->
+        <div class="swap-col">
+          <div class="swap-circ" id="fromChainCircle">
+            <div class="swap-circ-inner" id="fromChainIcon">
+              <img id="fromChainImg" src="" alt="FROM" />
+            </div>
+          </div>
+          <div class="swap-circ-label">FROM</div>
+          <select class="chain-select" id="fromSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
+        </div>
+        <!-- TO -->
+        <div class="swap-col">
+          <div class="swap-circ to" id="toChainCircle">
+            <div class="swap-circ-inner" id="toChainIcon">
+              <img id="toChainImg" src="" alt="TO" />
+            </div>
+          </div>
+          <div class="swap-circ-label">TO</div>
+          <select class="chain-select" id="toSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
+        </div>
+      </div>
+      <!-- Amount -->
+      <div class="swap-amount-label">Amount</div>
+      <div class="swap-amount-row">
+        <input class="swap-amount-input" id="amountInput" type="number" placeholder="0.00" min="0" />
+        <button class="swap-max-btn" type="button" id="maxBtn">Max</button>
+      </div>
+      <div class="swap-min-row" id="minRow">
+        Minimum : 0.01 BNB | Available: 00 BNB
+      </div>
+      <!-- Destination -->
+      <div class="swap-dest-label">Destination Address</div>
+      <input class="swap-dest-input" id="destAddress" type="text" placeholder="" autocomplete="off">
+      <button class="swap-btn" id="swapBtn">Swap</button>
+    </form>
+  </div>
+  <script>
+    // Logos de blockchains actualizados
+    const chainIcons = {
+  sol: "https://yagecoin.space/wp-content/uploads/2025/08/solana32x32.jpg",
+  ton: "https://yagecoin.space/wp-content/uploads/2025/08/ton32x32.jpg",
+  sui: "https://yagecoin.space/wp-content/uploads/2025/08/sui32x32.jpg",
+  aptos: "https://yagecoin.space/wp-content/uploads/2025/08/aptos32x32.jpg",
+  ada: "https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo32x32.jpg",
+  btc: "https://yagecoin.space/wp-content/uploads/2025/08/btc32x32.jpg",
+  doge: "https://yagecoin.space/wp-content/uploads/2025/08/Dogecoin-logo-tumb-32x32-1.png",
+  matic: "hhttps://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg",
+  near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png"
+
+  bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+  eth: "https://i.ibb.co/WNjcgb0/ethereum32x32.jpg",  // CORREGIDO
+  arbitrum: "https://yagecoin.space/wp-content/uploads/2025/08/arbitrum32x32.jpg",
+  fantom: "https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.jpg",
+  avalanche: "https://yagecoin.space/wp-content/uploads/2025/08/avalanche32x32.jpg",
+  gnosis: "https://yagecoin.space/wp-content/uploads/2025/08/gnosis32x32.jpg",
+  dot: "https://yagecoin.space/wp-content/uploads/2025/08/dot32x2.jpg", // CORREGIDO
+  
+
+  
+
+
+
+  
+};
+    const minByChain = {
+      bsc: { symbol: "BNB", min: 0.01 },
+      eth: { symbol: "ETH", min: 0.002 },
+      polygon: { symbol: "MATIC", min: 2 },
+      arbitrum: { symbol: "ETH", min: 0.002 },
+      fantom: { symbol: "FTM", min: 5 },
+      avalanche: { symbol: "AVAX", min: 0.2 },
+      gnosis: { symbol: "xDAI", min: 2 },
+      dot: { symbol: "DOT", min: 0.1 },
+      sol: { symbol: "SOL", min: 0.01 },
+      ton: { symbol: "TON", min: 0.1 },
+      sui: { symbol: "SUI", min: 0.1 },
+      aptos: { symbol: "APT", min: 0.1 },
+      ada: { symbol: "ADA", min: 2 },
+      btc: { symbol: "BTC", min: 0.0001 },
+      doge: { symbol: "DOGE", min: 10 },
+      matic: { symbol: "MATIC", min: 2 },
+      near: { symbol: "NEAR", min: 1 }
+    };
+
+    function updateMinRow(key) {
+      const minRow = document.getElementById('minRow');
+      const amountInput = document.getElementById('amountInput');
+      const minObj = minByChain[key];
+      if (minObj) {
+        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+        amountInput.setAttribute("min", minObj.min);
+      } else {
+        minRow.innerHTML = `Minimum : 0 | Available: 00`;
+        amountInput.removeAttribute("min");
+      }
+    }
+
+    // Inicializa logos y eventos
+    document.addEventListener("DOMContentLoaded", function() {
+      // Inicializar logos por defecto
+      document.getElementById('fromChainImg').src = chainIcons.bsc;
+      document.getElementById('toChainImg').src = chainIcons.eth;
+      
+      // Configurar el select FROM
+      const fromSelect = document.getElementById('fromSelect');
+      fromSelect.value = 'bsc';
+      fromSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('fromChainImg').src = chainIcons[selectedChain];
+        updateMinRow(selectedChain);
+        window._fromSelected = selectedChain;
+      });
+      
+      // Configurar el select TO
+      const toSelect = document.getElementById('toSelect');
+      toSelect.value = 'eth';
+      toSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('toChainImg').src = chainIcons[selectedChain];
+        window._toSelected = selectedChain;
+      });
+      
+      // Inicializar variables
+      window._fromSelected = "bsc";
+      window._toSelected = "eth";
+      updateMinRow("bsc");
+    });
+
+    document.getElementById('maxBtn').onclick = function() {
+      const v = window._fromSelected || "bsc";
+      const minObj = minByChain[v];
+      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+    };
+
+    let walletAddress = null;
+    const walletBtn = document.getElementById('walletBtn');
+    walletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask or EVM-compatible wallet not found.");
+        return;
+      }
+      try {
+        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        walletAddress = await signer.getAddress();
+        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+        walletBtn.disabled = true;
+        walletBtn.style.background="#333";
+        walletBtn.style.color="#fff";
+        walletBtn.style.cursor="default";
+      } catch (e) {
+        alert("Wallet connection was cancelled or failed.");
+      }
+    };
+
+    document.getElementById('swapBtn').onclick = function(e) {
+      e.preventDefault();
+      if (!walletAddress) {
+        walletBtn.onclick();
+        return;
+      }
+      const fromKey = window._fromSelected || "bsc";
+      const toKey = window._toSelected || "eth";
+      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      if (isNaN(amount) || amount < fromMin) {
+        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+        return;
+      }
+      let logicAmount = amount;
+      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+    };
+  </script>
+  <!-- Ethers.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html> Y MIRA LO QUE ME SALE NO SALEN LOS LOGOS , SOLUCIONA ESO QUE LS IMAGENES ESTAN CORRECTAS ES TU CODIGO QUE NO LO ESTAS HACIENDO BIEN 
+Copilot said: ¡Detecté el problema principal en tu código
+¡Detecté el problema principal en tu código JavaScript!
+Tu objeto chainIcons tiene un error de sintaxis y un error de typo que hace que el código JS se rompa y NUNCA asigne los logos correctamente.
+
+Errores:
+Falta una coma (,) entre los elementos de tu objeto chainIcons:
+
+js
+near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png"
+bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+Debe ser:
+
+js
+near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png",
+bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+Hay un typo en el link de MATIC:
+
+js
+matic: "hhttps://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg",
+Debe ser:
+
+js
+matic: "https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg",
+El link de DOT es .jpg pero lo tienes como .jpg en el objeto pero .jpg en el archivo. Asegúrate que el archivo existe en WordPress con ese nombre exacto.
+
+SOLUCIÓN
+Aquí tienes el bloque de código corregido.
+Cambia solo tu objeto chainIcons por este (corrige las comas y el typo):
+
+js
+const chainIcons = {
+  sol: "https://yagecoin.space/wp-content/uploads/2025/08/solana32x32.jpg",
+  ton: "https://yagecoin.space/wp-content/uploads/2025/08/ton32x32.jpg",
+  sui: "https://yagecoin.space/wp-content/uploads/2025/08/sui32x32.jpg",
+  aptos: "https://yagecoin.space/wp-content/uploads/2025/08/aptos32x32.jpg",
+  ada: "https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo32x32.jpg",
+  btc: "https://yagecoin.space/wp-content/uploads/2025/08/btc32x32.jpg",
+  doge: "https://yagecoin.space/wp-content/uploads/2025/08/Dogecoin-logo-tumb-32x32-1.png",
+  matic: "https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg", // typo corregido
+  near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png", // <--- aquí va la coma!!
+  bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+  eth: "https://i.ibb.co/WNjcgb0/ethereum32x32.jpg",
+  polygon: "https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg",
+  arbitrum: "https://yagecoin.space/wp-content/uploads/2025/08/arbitrum32x32.jpg",
+  fantom: "https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.jpg",
+  avalanche: "https://yagecoin.space/wp-content/uploads/2025/08/avalanche32x32.jpg",
+  gnosis: "https://yagecoin.space/wp-content/uploads/2025/08/gnosis32x32.jpg",
+  dot: "https://yagecoin.space/wp-content/uploads/2025/08/dot32x32.jpg"
+};
+Resumen
+Agrega la coma faltante después de cada línea del objeto.
+Corrige el typo de "hhttps" a "https".
+Verifica que los links de WordPress existan y abran la imagen.
+Guarda y refresca tu página (Ctrl+F5).
+Si haces estos cambios, los logos deben aparecer al instante.
+Si después de esto no ves logos, revisa la consola del navegador (F12 > Consola) por errores, y dime exactamente qué error sale.
+
+¿Quieres el archivo HTML completo corregido para reemplazar?
+
+Uploaded image: image.png
+You said: ACABO DE COLOCAR ESTE ULTIMO CODIGO =<!DOCTYPE
+ACABO DE COLOCAR ESTE ULTIMO CODIGO =<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>yagecoin swap bridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .headerbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      height: 56px;
+      background: transparent;
+      position: relative;
+    }
+    .app-logo {
+      height: 42px;
+      margin: 8px 0 8px 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .wallet-connect-btn {
+      background: #c2ff09;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 22px;
+      margin: 10px 24px 10px 0;
+      cursor: pointer;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 16px 0 #c2ff0933;
+    }
+    .wallet-connect-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .main-wrap {
+      min-height: calc(100vh - 56px);
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swap-card {
+      background: #232323;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 #0008;
+      max-width: 430px;
+      width: 98vw;
+      margin: 48px 0 0 0;
+      padding: 42px 35px 32px 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 290px;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.98);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .swap-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .swap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 24px;
+    }
+    .swap-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swap-circ {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      box-shadow: 0 0 16px 0 #00ffe9bb;
+      border: 2.5px solid #00ffe9cc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .swap-circ.to {
+      box-shadow: 0 0 16px 0 #c2ff0999;
+      border: 2.5px solid #c2ff09;
+    }
+    .swap-circ-inner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232323;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 7px #0009;
+      overflow: hidden;
+    }
+    .swap-circ-inner img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #fff;
+      display: block !important;
+      border: none;
+      opacity: 1;
+    }
+    .swap-circ-label {
+      font-size: 0.87rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* CHAIN SELECT - NEGRO CON TEXTO BLANCO */
+    .chain-select {
+      width: 100%;
+      background: #111 !important;
+      color: #fff !important;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.17s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    .chain-select:hover,
+    .chain-select:focus {
+      border-color: #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .chain-select option {
+      background: #111 !important;
+      color: #fff !important;
+      padding: 8px;
+    }
+
+    /* INPUTS - NEGRO CON TEXTO BLANCO */
+    .swap-amount-label, .swap-dest-label {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 4px;
+      margin-top: 9px;
+      font-weight: 500;
+      text-align: left;
+    }
+    .swap-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .swap-amount-input,
+    .swap-dest-input {
+      flex: 1;
+      background: #111 !important;
+      border: none;
+      border-bottom: 2px solid #444;
+      color: #fff !important;
+      font-size: 1.23rem;
+      font-family: inherit;
+      padding: 12px 0 12px 10px;
+      margin: 0;
+      outline: none;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .swap-amount-input:focus,
+    .swap-dest-input:focus {
+      border-bottom: 2px solid #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .swap-amount-input::placeholder,
+    .swap-dest-input::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+    .swap-max-btn {
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      margin-left: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .swap-max-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .swap-min-row {
+      font-size: 0.90rem;
+      color: #bbb;
+      margin-bottom: 12px;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .swap-btn {
+      width: 100%;
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 13px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      margin-bottom: 2px;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 24px 0 #c2ff0935;
+    }
+    .swap-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="headerbar">
+    <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
+    <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
+  </div>
+  <div class="main-wrap">
+    <form class="swap-card" autocomplete="off" onsubmit="event.preventDefault()">
+      <div class="swap-title">Send</div>
+      <div class="swap-row">
+        <!-- FROM -->
+        <div class="swap-col">
+          <div class="swap-circ" id="fromChainCircle">
+            <div class="swap-circ-inner" id="fromChainIcon">
+              <img id="fromChainImg" src="" alt="FROM" />
+            </div>
+          </div>
+          <div class="swap-circ-label">FROM</div>
+          <select class="chain-select" id="fromSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
+        </div>
+        <!-- TO -->
+        <div class="swap-col">
+          <div class="swap-circ to" id="toChainCircle">
+            <div class="swap-circ-inner" id="toChainIcon">
+              <img id="toChainImg" src="" alt="TO" />
+            </div>
+          </div>
+          <div class="swap-circ-label">TO</div>
+          <select class="chain-select" id="toSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
+        </div>
+      </div>
+      <!-- Amount -->
+      <div class="swap-amount-label">Amount</div>
+      <div class="swap-amount-row">
+        <input class="swap-amount-input" id="amountInput" type="number" placeholder="0.00" min="0" />
+        <button class="swap-max-btn" type="button" id="maxBtn">Max</button>
+      </div>
+      <div class="swap-min-row" id="minRow">
+        Minimum : 0.01 BNB | Available: 00 BNB
+      </div>
+      <!-- Destination -->
+      <div class="swap-dest-label">Destination Address</div>
+      <input class="swap-dest-input" id="destAddress" type="text" placeholder="" autocomplete="off">
+      <button class="swap-btn" id="swapBtn">Swap</button>
+    </form>
+  </div>
+  <script>
+    // Logos de blockchains actualizados
+    const chainIcons = {
+  sol: "https://yagecoin.space/wp-content/uploads/2025/08/solana32x32.jpg",
+  ton: "https://yagecoin.space/wp-content/uploads/2025/08/ton32x32.jpg",
+  sui: "https://yagecoin.space/wp-content/uploads/2025/08/sui32x32.jpg",
+  aptos: "https://yagecoin.space/wp-content/uploads/2025/08/aptos32x32.jpg",
+  ada: "https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo32x32.jpg",
+  btc: "https://yagecoin.space/wp-content/uploads/2025/08/btc32x32.jpg",
+  doge: "https://yagecoin.space/wp-content/uploads/2025/08/Dogecoin-logo-tumb-32x32-1.png",
+  matic: "hhttps://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg",
+  near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png",
+  bsc: "https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token32x32.jpg",
+  eth: "https://yagecoin.space/wp-content/uploads/2025/08/ethereum-icon-1.jpg",  // CORREGIDO
+  arbitrum: "https://yagecoin.space/wp-content/uploads/2025/08/arbitrum32x32.jpg",
+  fantom: "https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.jpg",
+  avalanche: "https://yagecoin.space/wp-content/uploads/2025/08/avalanche32x32.jpg",
+  gnosis: "https://yagecoin.space/wp-content/uploads/2025/08/gnosis32x32.jpg",
+  dot: "https://yagecoin.space/wp-content/uploads/2025/08/dot32x2.jpg" // CORREGIDO
+  
+
+  
+
+
+
+  
+};
+    const minByChain = {
+      bsc: { symbol: "BNB", min: 0.01 },
+      eth: { symbol: "ETH", min: 0.002 },
+      polygon: { symbol: "MATIC", min: 2 },
+      arbitrum: { symbol: "ETH", min: 0.002 },
+      fantom: { symbol: "FTM", min: 5 },
+      avalanche: { symbol: "AVAX", min: 0.2 },
+      gnosis: { symbol: "xDAI", min: 2 },
+      dot: { symbol: "DOT", min: 0.1 },
+      sol: { symbol: "SOL", min: 0.01 },
+      ton: { symbol: "TON", min: 0.1 },
+      sui: { symbol: "SUI", min: 0.1 },
+      aptos: { symbol: "APT", min: 0.1 },
+      ada: { symbol: "ADA", min: 2 },
+      btc: { symbol: "BTC", min: 0.0001 },
+      doge: { symbol: "DOGE", min: 10 },
+      matic: { symbol: "MATIC", min: 2 },
+      near: { symbol: "NEAR", min: 1 }
+    };
+
+    function updateMinRow(key) {
+      const minRow = document.getElementById('minRow');
+      const amountInput = document.getElementById('amountInput');
+      const minObj = minByChain[key];
+      if (minObj) {
+        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+        amountInput.setAttribute("min", minObj.min);
+      } else {
+        minRow.innerHTML = `Minimum : 0 | Available: 00`;
+        amountInput.removeAttribute("min");
+      }
+    }
+
+    // Inicializa logos y eventos
+    document.addEventListener("DOMContentLoaded", function() {
+      // Inicializar logos por defecto
+      document.getElementById('fromChainImg').src = chainIcons.bsc;
+      document.getElementById('toChainImg').src = chainIcons.eth;
+      
+      // Configurar el select FROM
+      const fromSelect = document.getElementById('fromSelect');
+      fromSelect.value = 'bsc';
+      fromSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('fromChainImg').src = chainIcons[selectedChain];
+        updateMinRow(selectedChain);
+        window._fromSelected = selectedChain;
+      });
+      
+      // Configurar el select TO
+      const toSelect = document.getElementById('toSelect');
+      toSelect.value = 'eth';
+      toSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('toChainImg').src = chainIcons[selectedChain];
+        window._toSelected = selectedChain;
+      });
+      
+      // Inicializar variables
+      window._fromSelected = "bsc";
+      window._toSelected = "eth";
+      updateMinRow("bsc");
+    });
+
+    document.getElementById('maxBtn').onclick = function() {
+      const v = window._fromSelected || "bsc";
+      const minObj = minByChain[v];
+      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+    };
+
+    let walletAddress = null;
+    const walletBtn = document.getElementById('walletBtn');
+    walletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask or EVM-compatible wallet not found.");
+        return;
+      }
+      try {
+        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        walletAddress = await signer.getAddress();
+        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+        walletBtn.disabled = true;
+        walletBtn.style.background="#333";
+        walletBtn.style.color="#fff";
+        walletBtn.style.cursor="default";
+      } catch (e) {
+        alert("Wallet connection was cancelled or failed.");
+      }
+    };
+
+    document.getElementById('swapBtn').onclick = function(e) {
+      e.preventDefault();
+      if (!walletAddress) {
+        walletBtn.onclick();
+        return;
+      }
+      const fromKey = window._fromSelected || "bsc";
+      const toKey = window._toSelected || "eth";
+      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      if (isNaN(amount) || amount < fromMin) {
+        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+        return;
+      }
+      let logicAmount = amount;
+      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+    };
+  </script>
+  <!-- Ethers.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>                                                                                                                                                                                   Y MIRA QUE COLOQUE EL CODIGO ULTIMO QU EME DISTE Y MIRA COMO SE SIGUE VIENDO SIN LOS LOGOS 
