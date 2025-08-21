@@ -1,282 +1,481 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multichain - Cross-chain Router</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>yagecoin swap bridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .headerbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      height: 56px;
+      background: transparent;
+      position: relative;
+    }
+    .app-logo {
+      height: 42px;
+      margin: 8px 0 8px 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .wallet-connect-btn {
+      background: #c2ff09;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 22px;
+      margin: 10px 24px 10px 0;
+      cursor: pointer;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 16px 0 #c2ff0933;
+    }
+    .wallet-connect-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .main-wrap {
+      min-height: calc(100vh - 56px);
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swap-card {
+      background: #232323;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 #0008;
+      max-width: 430px;
+      width: 98vw;
+      margin: 48px 0 0 0;
+      padding: 42px 35px 32px 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 290px;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.98);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .swap-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .swap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 24px;
+    }
+    .swap-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swap-circ {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      box-shadow: 0 0 16px 0 #00ffe9bb;
+      border: 2.5px solid #00ffe9cc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .swap-circ.to {
+      box-shadow: 0 0 16px 0 #c2ff0999;
+      border: 2.5px solid #c2ff09;
+    }
+    .swap-circ-inner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232323;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 7px #0009;
+      overflow: hidden;
+    }
+    .swap-circ-inner img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #fff;
+      display: block !important;
+      border: none;
+      opacity: 1;
+    }
+    .swap-circ-label {
+      font-size: 0.87rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* CHAIN SELECT - NEGRO CON TEXTO BLANCO */
+    .chain-select {
+      width: 100%;
+      background: #111 !important;
+      color: #fff !important;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.17s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    .chain-select:hover,
+    .chain-select:focus {
+      border-color: #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .chain-select option {
+      background: #111 !important;
+      color: #fff !important;
+      padding: 8px;
+    }
+
+    /* INPUTS - NEGRO CON TEXTO BLANCO */
+    .swap-amount-label, .swap-dest-label {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 4px;
+      margin-top: 9px;
+      font-weight: 500;
+      text-align: left;
+    }
+    .swap-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .swap-amount-input,
+    .swap-dest-input {
+      flex: 1;
+      background: #111 !important;
+      border: none;
+      border-bottom: 2px solid #444;
+      color: #fff !important;
+      font-size: 1.23rem;
+      font-family: inherit;
+      padding: 12px 0 12px 10px;
+      margin: 0;
+      outline: none;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .swap-amount-input:focus,
+    .swap-dest-input:focus {
+      border-bottom: 2px solid #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .swap-amount-input::placeholder,
+    .swap-dest-input::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+    .swap-max-btn {
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      margin-left: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .swap-max-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .swap-min-row {
+      font-size: 0.90rem;
+      color: #bbb;
+      margin-bottom: 12px;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .swap-btn {
+      width: 100%;
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 13px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      margin-bottom: 2px;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 24px 0 #c2ff0935;
+    }
+    .swap-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+  </style>
 </head>
-<body class="dark-theme">
-    <!-- Top Banner -->
-    <div class="top-banner" id="topBanner">
-        <span>Multichain is formerly known as Anyswap</span>
-        <a href="https://multichain.org" target="_blank">https://multichain.org</a>
-        <button class="close-banner" onclick="closeBanner()">×</button>
-    </div>
-
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <!-- Logo -->
-            <div class="logo">
-                <!-- Reemplazando SVG y texto por imágenes dinámicas según tema -->
-                <img id="logoImage" src="https://i.ibb.co/5gfKPF2S/multichain-logo-noche.png" alt="Multichain" class="logo-image">
+<body>
+  <!-- HEADER -->
+  <div class="headerbar">
+    <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
+    <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
+  </div>
+  <div class="main-wrap">
+    <form class="swap-card" autocomplete="off" onsubmit="event.preventDefault()">
+      <div class="swap-title">Send</div>
+      <div class="swap-row">
+        <!-- FROM -->
+        <div class="swap-col">
+          <div class="swap-circ" id="fromChainCircle">
+            <div class="swap-circ-inner" id="fromChainIcon">
+              <img id="fromChainImg" src="" alt="FROM" />
             </div>
-
-            <!-- Navigation -->
-            <nav class="nav">
-                <a href="#" class="nav-link active">Router</a>
-                <a href="#" class="nav-link">Pool</a>
-                <a href="#" class="nav-link">Farms</a>
-                <a href="#" class="nav-link">veMULTI</a>
-                <a href="#" class="nav-link">NFT</a>
-                <a href="#" class="nav-link">History</a>
-                <button class="nav-more">⋯</button>
-            </nav>
-
-            <!-- Right Section -->
-            <div class="header-right">
-                <!-- Network Selector -->
-                <div class="network-selector" onclick="toggleNetworkModal()">
-                    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="network-icon">
-                    <span>Ethereum</span>
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-
-                <!-- Connect Wallet Button -->
-                <button class="connect-wallet-btn" onclick="toggleWalletModal()">
-                    Connect to a wallet
-                </button>
-
-                <!-- Theme Toggle -->
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-                        <path d="M10 2V4M10 16V18M18 10H16M4 10H2M15.66 4.34L14.24 5.76M5.76 14.24L4.34 15.66M15.66 15.66L14.24 14.24M5.76 5.76L4.34 4.34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                </button>
-            </div>
+          </div>
+          <div class="swap-circ-label">FROM</div>
+          <select class="chain-select" id="fromSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main">
-        <div class="container">
-            <!-- Page Title -->
-            <div class="page-header">
-                <h1>Crosschain</h1>
-                <button class="settings-btn">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M10.343 1.343L9.657 2.657C9.343 3.343 8.657 3.657 8 3.657H7C6.448 3.657 6 4.105 6 4.657V5.657C6 6.314 5.686 7 5 7.314L3.686 8C3 8.314 2.686 9 2.686 9.657V10.343C2.686 11 3 11.686 3.686 12L5 12.686C5.686 13 6 13.686 6 14.343V15.343C6 15.895 6.448 16.343 7 16.343H8C8.657 16.343 9.343 16.657 9.657 17.343L10.343 18.657C11 19.343 11.686 19.657 12.343 19.657H13.657C14.314 19.657 15 19.343 15.686 18.657L16.343 17.343C16.657 16.657 17.343 16.343 18 16.343H19C19.552 16.343 20 15.895 20 15.343V14.343C20 13.686 19.686 13 19 12.686L17.686 12C17 11.686 16.686 11 16.686 10.343V9.657C16.686 9 17 8.314 17.686 8L19 7.314C19.686 7 20 6.314 20 5.657V4.657C20 4.105 19.552 3.657 19 3.657H18C17.343 3.657 16.657 3.343 16.343 2.657L15.657 1.343C15 0.657 14.314 0.343 13.657 0.343H12.343C11.686 0.343 11 0.657 10.343 1.343Z" stroke="currentColor" stroke-width="1.5"/>
-                        <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                </button>
+        <!-- TO -->
+        <div class="swap-col">
+          <div class="swap-circ to" id="toChainCircle">
+            <div class="swap-circ-inner" id="toChainIcon">
+              <img id="toChainImg" src="" alt="TO" />
             </div>
-
-            <!-- Swap Interface -->
-            <div class="swap-container">
-                <!-- From Section -->
-                <div class="swap-section from-section">
-                    <div class="section-header">
-                        <span class="section-label">From</span>
-                        <span class="balance">Balance: -</span>
-                    </div>
-                    <div class="input-row">
-                        <input type="text" class="amount-input" placeholder="0.0" value="0.0">
-                        <div class="token-selector" onclick="toggleTokenModal('from')">
-                            <div class="token-placeholder">
-                                <span class="question-mark">?</span>
-                            </div>
-                            <span class="token-text">Select a token</span>
-                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="network-badge">
-                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="network-badge-icon">
-                            <span>mainnet</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Swap Arrow -->
-                <div class="swap-arrow-container">
-                    <button class="swap-arrow" onclick="swapTokens()">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 1V15M8 15L3 10M8 15L13 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <button class="send-to-btn">+ Send To</button>
-                </div>
-
-                <!-- To Section -->
-                <div class="swap-section to-section">
-                    <div class="section-header">
-                        <span class="section-label">To</span>
-                        <span class="balance">Balance: -</span>
-                    </div>
-                    <div class="input-row">
-                        <input type="text" class="amount-input" placeholder="0.0" value="0.0">
-                        <div class="token-selector" onclick="toggleTokenModal('to')">
-                            <div class="token-placeholder">
-                                <span class="question-mark">?</span>
-                            </div>
-                            <span class="token-text">Select a token</span>
-                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="network-badge">
-                            <div class="network-placeholder">
-                                <span class="question-mark">?</span>
-                            </div>
-                            <span>Select Network</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Connect Wallet Button -->
-                <button class="main-connect-btn" onclick="toggleWalletModal()">
-                    Connect Wallet
-                </button>
-            </div>
+          </div>
+          <div class="swap-circ-label">TO</div>
+          <select class="chain-select" id="toSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
         </div>
-    </main>
+      </div>
+      <!-- Amount -->
+      <div class="swap-amount-label">Amount</div>
+      <div class="swap-amount-row">
+        <input class="swap-amount-input" id="amountInput" type="number" placeholder="0.00" min="0" />
+        <button class="swap-max-btn" type="button" id="maxBtn">Max</button>
+      </div>
+      <div class="swap-min-row" id="minRow">
+        Minimum : 0.01 BNB | Available: 00 BNB
+      </div>
+      <!-- Destination -->
+      <div class="swap-dest-label">Destination Address</div>
+      <input class="swap-dest-input" id="destAddress" type="text" placeholder="" autocomplete="off">
+      <button class="swap-btn" id="swapBtn">Swap</button>
+    </form>
+  </div>
+  <script>
+    // Logos de blockchains actualizados
+    const chainIcons = {
+      bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+      eth: "https://i.ibb.co/WNjcgb09/ethereum32x32.jpg",
+      polygon: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      arbitrum: "https://i.ibb.co/jZTNW78Z/arbitrum32x32.jpg",
+      fantom: "https://i.ibb.co/nq0Kmc8z/logo-fantom.jpg",
+      avalanche: "https://i.ibb.co/KjcdtJ2L/avalanche32x32.jpg",
+      gnosis: "https://i.ibb.co/svQd3jvL/gnosis32x32.jpg",
+      dot: "https://i.ibb.co/Y5W40LL/dot32x2.jpg",
+      sol: "https://i.ibb.co/yF4BY4Mb/solana32x32.jpg",
+      ton: "https://i.ibb.co/G3NmrwXc/ton32x32.jpg",
+      sui: "https://i.ibb.co/8nXLsBqB/sui32x32.jpg",
+      aptos: "https://i.ibb.co/0RHpfPZt/aptos32x32.jpg",
+      ada: "https://i.ibb.co/HcsQyRf/cardano32x32.jpg",
+      btc: "https://i.ibb.co/F19ymGW/btc32x32.jpg",
+      doge: "https://i.ibb.co/vCM2hw6D/Dogecoin32x32.png",
+      matic: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      near: "https://i.ibb.co/qYmw4KQX/near32x32.png"
+    };
 
-    <!-- Network Selection Modal -->
-    <div class="modal-overlay" id="networkModal" onclick="closeNetworkModal()">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3>Select Network</h3>
-                <button class="close-btn" onclick="closeNetworkModal()">×</button>
-            </div>
-            <div class="modal-content">
-                <div class="network-list">
-                    <div class="network-item active" onclick="selectNetwork('ethereum')">
-                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum">
-                        <span>Ethereum</span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('optimism')">
-                        <img src="https://cryptologos.cc/logos/optimism-ethereum-op-logo.png" alt="Optimism">
-                        <span>Optimism</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('polygon')">
-                        <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon">
-                        <span>Polygon</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('arbitrum')">
-                        <img src="https://cryptologos.cc/logos/arbitrum-arb-logo.png" alt="Arbitrum">
-                        <span>Arbitrum</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('fantom')">
-                        <img src="https://cryptologos.cc/logos/fantom-ftm-logo.png" alt="Fantom">
-                        <span>Fantom</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('avalanche')">
-                        <img src="https://cryptologos.cc/logos/avalanche-avax-logo.png" alt="Avalanche">
-                        <span>Avalanche</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('gnosis')">
-                        <img src="https://cryptologos.cc/logos/gnosis-gno-logo.png" alt="Gnosis">
-                        <span>Gnosis</span>
-                    </div>
-                    <div class="network-item" onclick="selectNetwork('bnb')">
-                        <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB">
-                        <span>BNB</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    const minByChain = {
+      bsc: { symbol: "BNB", min: 0.01 },
+      eth: { symbol: "ETH", min: 0.002 },
+      polygon: { symbol: "MATIC", min: 2 },
+      arbitrum: { symbol: "ETH", min: 0.002 },
+      fantom: { symbol: "FTM", min: 5 },
+      avalanche: { symbol: "AVAX", min: 0.2 },
+      gnosis: { symbol: "xDAI", min: 2 },
+      dot: { symbol: "DOT", min: 0.1 },
+      sol: { symbol: "SOL", min: 0.01 },
+      ton: { symbol: "TON", min: 0.1 },
+      sui: { symbol: "SUI", min: 0.1 },
+      aptos: { symbol: "APT", min: 0.1 },
+      ada: { symbol: "ADA", min: 2 },
+      btc: { symbol: "BTC", min: 0.0001 },
+      doge: { symbol: "DOGE", min: 10 },
+      matic: { symbol: "MATIC", min: 2 },
+      near: { symbol: "NEAR", min: 1 }
+    };
 
-    <!-- Wallet Connection Modal -->
-    <div class="modal-overlay" id="walletModal" onclick="closeWalletModal()">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3>Connect Wallet</h3>
-                <button class="close-btn" onclick="closeWalletModal()">×</button>
-            </div>
-            <div class="modal-content">
-                <div class="wallet-list">
-                    <div class="wallet-item" onclick="connectWallet('metamask')">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask">
-                        <span>MetaMask</span>
-                    </div>
-                    <div class="wallet-item" onclick="connectWallet('walletconnect')">
-                        <img src="https://walletconnect.com/walletconnect-logo.svg" alt="WalletConnect">
-                        <span>WalletConnect</span>
-                    </div>
-                    <div class="wallet-item" onclick="connectWallet('coinbase')">
-                        <img src="https://www.coinbase.com/img/favicon.ico" alt="Coinbase Wallet">
-                        <span>Coinbase Wallet</span>
-                    </div>
-                    <div class="wallet-item" onclick="connectWallet('trust')">
-                        <img src="https://trustwallet.com/assets/images/favicon.ico" alt="Trust Wallet">
-                        <span>Trust Wallet</span>
-                    </div>
-                    <div class="wallet-item" onclick="connectWallet('phantom')">
-                        <img src="https://phantom.app/img/phantom-logo.png" alt="Phantom">
-                        <span>Phantom</span>
-                    </div>
-                    <div class="wallet-item" onclick="connectWallet('binance')">
-                        <img src="https://www.binance.com/favicon.ico" alt="Binance Wallet">
-                        <span>Binance Wallet</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    function updateMinRow(key) {
+      const minRow = document.getElementById('minRow');
+      const amountInput = document.getElementById('amountInput');
+      const minObj = minByChain[key];
+      if (minObj) {
+        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+        amountInput.setAttribute("min", minObj.min);
+      } else {
+        minRow.innerHTML = `Minimum : 0 | Available: 00`;
+        amountInput.removeAttribute("min");
+      }
+    }
 
-    <!-- Token Selection Modal -->
-    <div class="modal-overlay" id="tokenModal" onclick="closeTokenModal()">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3>Select Token</h3>
-                <button class="close-btn" onclick="closeTokenModal()">×</button>
-            </div>
-            <div class="modal-content">
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search name or paste address">
-                </div>
-                <div class="token-list">
-                    <div class="token-item" onclick="selectToken('ETH')">
-                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH">
-                        <div class="token-info">
-                            <span class="token-name">Ethereum</span>
-                            <span class="token-symbol">ETH</span>
-                        </div>
-                        <span class="token-balance">0</span>
-                    </div>
-                    <div class="token-item" onclick="selectToken('USDT')">
-                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
-                        <div class="token-info">
-                            <span class="token-name">Tether USD</span>
-                            <span class="token-symbol">USDT</span>
-                        </div>
-                        <span class="token-balance">0</span>
-                    </div>
-                    <div class="token-item" onclick="selectToken('USDC')">
-                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC">
-                        <div class="token-info">
-                            <span class="token-name">USD Coin</span>
-                            <span class="token-symbol">USDC</span>
-                        </div>
-                        <span class="token-balance">0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    // Inicializa logos y eventos
+    document.addEventListener("DOMContentLoaded", function() {
+      // Inicializar logos por defecto
+      document.getElementById('fromChainImg').src = chainIcons.bsc;
+      document.getElementById('toChainImg').src = chainIcons.eth;
+      
+      // Configurar el select FROM
+      const fromSelect = document.getElementById('fromSelect');
+      fromSelect.value = 'bsc';
+      fromSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('fromChainImg').src = chainIcons[selectedChain];
+        updateMinRow(selectedChain);
+        window._fromSelected = selectedChain;
+      });
+      
+      // Configurar el select TO
+      const toSelect = document.getElementById('toSelect');
+      toSelect.value = 'eth';
+      toSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('toChainImg').src = chainIcons[selectedChain];
+        window._toSelected = selectedChain;
+      });
+      
+      // Inicializar variables
+      window._fromSelected = "bsc";
+      window._toSelected = "eth";
+      updateMinRow("bsc");
+    });
 
-    <script src="script.js"></script>
+    document.getElementById('maxBtn').onclick = function() {
+      const v = window._fromSelected || "bsc";
+      const minObj = minByChain[v];
+      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+    };
+
+    let walletAddress = null;
+    const walletBtn = document.getElementById('walletBtn');
+    walletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask or EVM-compatible wallet not found.");
+        return;
+      }
+      try {
+        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        walletAddress = await signer.getAddress();
+        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+        walletBtn.disabled = true;
+        walletBtn.style.background="#333";
+        walletBtn.style.color="#fff";
+        walletBtn.style.cursor="default";
+      } catch (e) {
+        alert("Wallet connection was cancelled or failed.");
+      }
+    };
+
+    document.getElementById('swapBtn').onclick = function(e) {
+      e.preventDefault();
+      if (!walletAddress) {
+        walletBtn.onclick();
+        return;
+      }
+      const fromKey = window._fromSelected || "bsc";
+      const toKey = window._toSelected || "eth";
+      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      if (isNaN(amount) || amount < fromMin) {
+        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+        return;
+      }
+      let logicAmount = amount;
+      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+    };
+  </script>
+  <!-- Ethers.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </body>
 </html>
