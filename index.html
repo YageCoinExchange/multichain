@@ -341,30 +341,24 @@
   <script>
     // Logos de blockchains actualizados
     const chainIcons = {
-  sol: "https://yagecoin.space/wp-content/uploads/2025/08/solana32x32.jpg",
-  ton: "https://yagecoin.space/wp-content/uploads/2025/08/ton32x32.jpg",
-  sui: "https://yagecoin.space/wp-content/uploads/2025/08/sui32x32.jpg",
-  aptos: "https://yagecoin.space/wp-content/uploads/2025/08/aptos32x32.jpg",
-  ada: "https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo32x32.jpg",
-  btc: "https://yagecoin.space/wp-content/uploads/2025/08/btc32x32.jpg",
-  doge: "https://yagecoin.space/wp-content/uploads/2025/08/Dogecoin-logo-tumb-32x32-1.png",
-  matic: "hhttps://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg",
-  near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png",
-  bsc: "https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token32x32.jpg",
-  eth: "https://yagecoin.space/wp-content/uploads/2025/08/ethereum-icon-1.jpg",  // CORREGIDO
-  arbitrum: "https://yagecoin.space/wp-content/uploads/2025/08/arbitrum32x32.jpg",
-  fantom: "https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.jpg",
-  avalanche: "https://yagecoin.space/wp-content/uploads/2025/08/avalanche32x32.jpg",
-  gnosis: "https://yagecoin.space/wp-content/uploads/2025/08/gnosis32x32.jpg",
-  dot: "https://yagecoin.space/wp-content/uploads/2025/08/dot32x2.jpg" // CORREGIDO
-  
+      sol: "https://yagecoin.space/wp-content/uploads/2025/08/solana32x32.jpg",
+      ton: "https://yagecoin.space/wp-content/uploads/2025/08/ton32x32.jpg",
+      sui: "https://yagecoin.space/wp-content/uploads/2025/08/sui32x32.jpg",
+      aptos: "https://yagecoin.space/wp-content/uploads/2025/08/aptos32x32.jpg",
+      ada: "https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo32x32.jpg",
+      btc: "https://yagecoin.space/wp-content/uploads/2025/08/btc32x32.jpg",
+      doge: "https://yagecoin.space/wp-content/uploads/2025/08/Dogecoin-logo-tumb-32x32-1.png",
+      matic: "https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg", // CORREGIDO: "hhttps" a "https"
+      near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png",
+      bsc: "https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token32x32.jpg",
+      eth: "https://yagecoin.space/wp-content/uploads/2025/08/ethereum-icon-1.jpg",
+      arbitrum: "https://yagecoin.space/wp-content/uploads/2025/08/arbitrum32x32.jpg",
+      fantom: "https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.jpg",
+      avalanche: "https://yagecoin.space/wp-content/uploads/2025/08/avalanche32x32.jpg",
+      gnosis: "https://yagecoin.space/wp-content/uploads/2025/08/gnosis32x32.jpg",
+      dot: "https://yagecoin.space/wp-content/uploads/2025/08/dot32x2.jpg"
+    };
 
-  
-
-
-
-  
-};
     const minByChain = {
       bsc: { symbol: "BNB", min: 0.01 },
       eth: { symbol: "ETH", min: 0.002 },
@@ -398,31 +392,41 @@
       }
     }
 
-    // Inicializa logos y eventos
+    function updateChainImg(selectId, imgId) {
+      const val = document.getElementById(selectId).value;
+      const iconUrl = chainIcons[val];
+      const imgElem = document.getElementById(imgId);
+      imgElem.src = iconUrl ?? '';
+      imgElem.alt = val.toUpperCase();
+      imgElem.onerror = function() {
+        this.src = "";
+      };
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
       // Inicializar logos por defecto
-      document.getElementById('fromChainImg').src = chainIcons.bsc;
-      document.getElementById('toChainImg').src = chainIcons.eth;
+      updateChainImg('fromSelect', 'fromChainImg');
+      updateChainImg('toSelect', 'toChainImg');
       
       // Configurar el select FROM
       const fromSelect = document.getElementById('fromSelect');
       fromSelect.value = 'bsc';
+      updateChainImg('fromSelect', 'fromChainImg');
       fromSelect.addEventListener('change', function() {
-        const selectedChain = this.value;
-        document.getElementById('fromChainImg').src = chainIcons[selectedChain];
-        updateMinRow(selectedChain);
-        window._fromSelected = selectedChain;
+        updateChainImg('fromSelect', 'fromChainImg');
+        updateMinRow(this.value);
+        window._fromSelected = this.value;
       });
-      
+
       // Configurar el select TO
       const toSelect = document.getElementById('toSelect');
       toSelect.value = 'eth';
+      updateChainImg('toSelect', 'toChainImg');
       toSelect.addEventListener('change', function() {
-        const selectedChain = this.value;
-        document.getElementById('toChainImg').src = chainIcons[selectedChain];
-        window._toSelected = selectedChain;
+        updateChainImg('toSelect', 'toChainImg');
+        window._toSelected = this.value;
       });
-      
+
       // Inicializar variables
       window._fromSelected = "bsc";
       window._toSelected = "eth";
