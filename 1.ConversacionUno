@@ -2493,3 +2493,1656 @@ Script=
 
 fin de la conversacion con claude
 
+SEGUNDA CONVERSACION CLAUDE
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>yagecoin swap bridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .headerbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      height: 56px;
+      background: transparent;
+      position: relative;
+    }
+    .app-logo {
+      height: 42px;
+      margin: 8px 0 8px 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .wallet-connect-btn {
+      background: #c2ff09;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 22px;
+      margin: 10px 24px 10px 0;
+      cursor: pointer;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 16px 0 #c2ff0933;
+    }
+    .wallet-connect-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .main-wrap {
+      min-height: calc(100vh - 56px);
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swap-card {
+      background: #232323;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 #0008;
+      max-width: 430px;
+      width: 98vw;
+      margin: 48px 0 0 0;
+      padding: 42px 35px 32px 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 290px;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.98);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .swap-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .swap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 24px;
+    }
+    .swap-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swap-circ {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      box-shadow: 0 0 16px 0 #00ffe9bb;
+      border: 2.5px solid #00ffe9cc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .swap-circ.to {
+      box-shadow: 0 0 16px 0 #c2ff0999;
+      border: 2.5px solid #c2ff09;
+    }
+    .swap-circ-inner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232323;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 7px #0009;
+      overflow: hidden;
+    }
+    .swap-circ-inner img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #232323;
+      display: block;
+      border: none;
+    }
+    .swap-circ-label {
+      font-size: 0.87rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* CUSTOM DROPDOWN */
+    .custom-dropdown {
+      width: 100%;
+      position: relative;
+      margin-bottom: 6px;
+      z-index: 5;
+    }
+    .custom-select-selected {
+      background: #111;
+      color: #fff;
+      padding: 11px 12px 11px 44px;
+      border: none;
+      border-bottom: 2px solid #444;
+      font-size: 1.05rem;
+      border-radius: 2px 2px 0 0;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.17s;
+      outline: none;
+    }
+    .custom-select-selected:after {
+      content: "";
+      position: absolute;
+      right: 16px;
+      top: 19px;
+      width: 0; height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #fff;
+      pointer-events: none;
+    }
+    .custom-select-logo {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #232323;
+      object-fit: contain;
+    }
+    .custom-options {
+      display: none;
+      position: absolute;
+      width: 100%;
+      max-height: 260px;
+      overflow-y: auto;
+      background: #111;
+      z-index: 10;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 24px #0009;
+    }
+    .custom-option {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 10px 10px 10px 45px;
+      font-size: 1.03rem;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.13s;
+      position: relative;
+    }
+    .custom-option img {
+      width: 23px;
+      height: 23px;
+      border-radius: 50%;
+      background: #232323;
+      object-fit: contain;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .custom-option:hover, .custom-option.selected {
+      background: #232323;
+    }
+
+    /* INPUTS */
+    .swap-amount-label, .swap-dest-label {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 4px;
+      margin-top: 9px;
+      font-weight: 500;
+      text-align: left;
+    }
+    .swap-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .swap-amount-input,
+    .swap-dest-input {
+      flex: 1;
+      background: #111 !important;
+      border: none;
+      border-bottom: 2px solid #444;
+      color: #fff !important;
+      font-size: 1.23rem;
+      font-family: inherit;
+      padding: 12px 0 12px 10px;
+      margin: 0;
+      outline: none;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .swap-amount-input:focus,
+    .swap-dest-input:focus {
+      border-bottom: 2px solid #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .swap-amount-input::placeholder,
+    .swap-dest-input::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+    .swap-max-btn {
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      margin-left: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .swap-max-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .swap-min-row {
+      font-size: 0.90rem;
+      color: #bbb;
+      margin-bottom: 12px;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .swap-btn {
+      width: 100%;
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 13px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      margin-bottom: 2px;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 24px 0 #c2ff0935;
+    }
+    .swap-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="headerbar">
+    <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
+    <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
+  </div>
+  <div class="main-wrap">
+    <form class="swap-card" autocomplete="off" onsubmit="event.preventDefault()">
+      <div class="swap-title">Send</div>
+      <div class="swap-row">
+        <!-- FROM -->
+        <div class="swap-col">
+          <div class="swap-circ" id="fromChainCircle">
+            <div class="swap-circ-inner" id="fromChainIcon">
+              <img id="fromChainImg" src="" alt="FROM" />
+            </div>
+          </div>
+          <div class="swap-circ-label">FROM</div>
+          <div class="custom-dropdown" id="fromDropdown"></div>
+        </div>
+        <!-- TO -->
+        <div class="swap-col">
+          <div class="swap-circ to" id="toChainCircle">
+            <div class="swap-circ-inner" id="toChainIcon">
+              <img id="toChainImg" src="" alt="TO" />
+            </div>
+          </div>
+          <div class="swap-circ-label">TO</div>
+          <div class="custom-dropdown" id="toDropdown"></div>
+        </div>
+      </div>
+      <!-- Amount -->
+      <div class="swap-amount-label">Amount</div>
+      <div class="swap-amount-row">
+        <input class="swap-amount-input" id="amountInput" type="number" placeholder="0.00" min="0" />
+        <button class="swap-max-btn" type="button" id="maxBtn">Max</button>
+      </div>
+      <div class="swap-min-row" id="minRow">
+        Minimum : 0.01 BNB | Available: 00 BNB
+      </div>
+      <!-- Destination -->
+      <div class="swap-dest-label">Destination Address</div>
+      <input class="swap-dest-input" id="destAddress" type="text" placeholder="" autocomplete="off">
+      <button class="swap-btn" id="swapBtn">Swap</button>
+    </form>
+  </div>
+  <script>
+    // Logos de blockchains oficiales
+    const chainIcons = {
+      bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+      eth: "https://i.ibb.co/WNjcgb09/ethereum32x32.jpg",
+      polygon: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      arbitrum: "https://i.ibb.co/jZTNW78Z/arbitrum32x32.jpg",
+      fantom: "https://i.ibb.co/nq0Kmc8z/logo-fantom.jpg",
+      avalanche: "https://i.ibb.co/KjcdtJ2L/avalanche32x32.jpg",
+      gnosis: "https://i.ibb.co/svQd3jvL/gnosis32x32.jpg",
+      dot: "https://i.ibb.co/Y5W40LL/dot32x2.jpg",
+      sol: "https://i.ibb.co/yF4BY4Mb/solana32x32.jpg",
+      ton: "https://i.ibb.co/G3NmrwXc/ton32x32.jpg",
+      sui: "https://i.ibb.co/8nXLsBqB/sui32x32.jpg",
+      aptos: "https://i.ibb.co/0RHpfPZt/aptos32x32.jpg",
+      ada: "https://i.ibb.co/HcsQyRf/cardano32x32.jpg",
+      btc: "https://i.ibb.co/F19ymGW/btc32x32.jpg",
+      doge: "https://i.ibb.co/vCM2hw6D/Dogecoin32x32.png",
+      matic: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      near: "https://i.ibb.co/qYmw4KQX/near32x32.png"
+    };
+
+    const chainLabels = {
+      bsc: "BSC - chain",
+      eth: "ETH - chain",
+      polygon: "Polygon - chain",
+      arbitrum: "Arbitrum - chain",
+      fantom: "Fantom - chain",
+      avalanche: "AVAX - chain",
+      gnosis: "Gnosis - chain",
+      dot: "DOT - network",
+      sol: "SOL - chain",
+      ton: "Ton - chain",
+      sui: "Sui - chain",
+      aptos: "Aptos - chain",
+      ada: "ADA - chain",
+      btc: "Bitcoin - chain",
+      doge: "Doge - chain",
+      matic: "Matic - chain",
+      near: "NEAR - chain"
+    };
+
+    // Mínimos lógicos por blockchain/token para el lado FROM
+    const minByChain = {
+      bsc: { symbol: "BNB", min: 0.01 },
+      eth: { symbol: "ETH", min: 0.002 },
+      polygon: { symbol: "MATIC", min: 2 },
+      arbitrum: { symbol: "ETH", min: 0.002 },
+      fantom: { symbol: "FTM", min: 5 },
+      avalanche: { symbol: "AVAX", min: 0.2 },
+      gnosis: { symbol: "xDAI", min: 2 },
+      dot: { symbol: "DOT", min: 0.1 },
+      sol: { symbol: "SOL", min: 0.01 },
+      ton: { symbol: "TON", min: 0.1 },
+      sui: { symbol: "SUI", min: 0.1 },
+      aptos: { symbol: "APT", min: 0.1 },
+      ada: { symbol: "ADA", min: 2 },
+      btc: { symbol: "BTC", min: 0.0001 },
+      doge: { symbol: "DOGE", min: 10 },
+      matic: { symbol: "MATIC", min: 2 },
+      near: { symbol: "NEAR", min: 1 }
+    };
+
+    // Custom select logic
+    function createDropdown(containerId, imgId, defaultValue, onChange) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      let selectedKey = defaultValue;
+
+      // Selected
+      const selected = document.createElement('div');
+      selected.className = "custom-select-selected";
+      selected.tabIndex = 0;
+
+      // Logo
+      const logo = document.createElement('img');
+      logo.className = "custom-select-logo";
+      logo.src = chainIcons[selectedKey];
+      logo.alt = selectedKey;
+      selected.appendChild(logo);
+
+      // Label text
+      const labelSpan = document.createElement('span');
+      labelSpan.textContent = chainLabels[selectedKey];
+      selected.appendChild(labelSpan);
+
+      // Options
+      const options = document.createElement('div');
+      options.className = "custom-options";
+      Object.keys(chainIcons).forEach(key => {
+        const opt = document.createElement('div');
+        opt.className = "custom-option";
+        if (key === selectedKey) opt.classList.add("selected");
+        const optLogo = document.createElement('img');
+        optLogo.src = chainIcons[key];
+        optLogo.alt = key;
+        opt.appendChild(optLogo);
+        opt.appendChild(document.createTextNode(chainLabels[key]));
+        opt.onclick = () => {
+          selectedKey = key;
+          logo.src = chainIcons[key];
+          logo.alt = key;
+          labelSpan.textContent = chainLabels[key];
+          Array.from(options.children).forEach(c => c.classList.remove("selected"));
+          opt.classList.add("selected");
+          options.style.display = "none";
+          onChange(key);
+        };
+        options.appendChild(opt);
+      });
+
+      selected.onclick = function(e) {
+        options.style.display = options.style.display === "block" ? "none" : "block";
+        e.stopPropagation();
+      };
+      selected.onblur = function() {
+        options.style.display = "none";
+      };
+
+      container.appendChild(selected);
+      container.appendChild(options);
+
+      // Inicial
+      onChange(selectedKey);
+
+      // Cierra el menú si haces click afuera
+      window.addEventListener('click', function() {
+        options.style.display = "none";
+      });
+    }
+
+    function updateFromChainVisuals(key) {
+      document.getElementById('fromChainImg').src = chainIcons[key];
+      document.getElementById('fromChainImg').alt = chainLabels[key];
+      updateMinRow(key);
+      window._fromSelected = key;
+    }
+    function updateToChainVisuals(key) {
+      document.getElementById('toChainImg').src = chainIcons[key];
+      document.getElementById('toChainImg').alt = chainLabels[key];
+      window._toSelected = key;
+    }
+    function updateMinRow(key) {
+      const minRow = document.getElementById('minRow');
+      const amountInput = document.getElementById('amountInput');
+      const minObj = minByChain[key];
+      if (minObj) {
+        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+        amountInput.setAttribute("min", minObj.min);
+      } else {
+        minRow.innerHTML = `Minimum : 0 | Available: 00`;
+        amountInput.removeAttribute("min");
+      }
+    }
+
+    // Inicializa custom selects y logos
+    window.addEventListener("DOMContentLoaded", function() {
+      createDropdown("fromDropdown", "fromChainImg", "bsc", updateFromChainVisuals);
+      createDropdown("toDropdown", "toChainImg", "bsc", updateToChainVisuals);
+    });
+
+    document.getElementById('maxBtn').onclick = function() {
+      const v = window._fromSelected || "bsc";
+      const minObj = minByChain[v];
+      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+    };
+
+    let walletAddress = null;
+    const walletBtn = document.getElementById('walletBtn');
+    walletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask or EVM-compatible wallet not found.");
+        return;
+      }
+      try {
+        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        walletAddress = await signer.getAddress();
+        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+        walletBtn.disabled = true;
+        walletBtn.style.background="#333";
+        walletBtn.style.color="#fff";
+        walletBtn.style.cursor="default";
+      } catch (e) {
+        alert("Wallet connection was cancelled or failed.");
+      }
+    };
+
+    document.getElementById('swapBtn').onclick = function(e) {
+      e.preventDefault();
+      if (!walletAddress) {
+        walletBtn.onclick();
+        return;
+      }
+      const fromKey = window._fromSelected || "bsc";
+      const toKey = window._toSelected || "bsc";
+      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      if (isNaN(amount) || amount < fromMin) {
+        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+        return;
+      }
+      let logicAmount = amount;
+      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+    };
+  </script>
+  <!-- Ethers.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>
+
+
+tengo el siguiente codigo y los links de los logos , quiero que reemplaces los links de los logos de los tokens y blockchain por estos links nuevos: https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png
+https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg
+https://i.ibb.co/WNjcgb09/ethereum32x32.jpg
+https://i.ibb.co/9934GM6X/polygon32x32.jpg
+https://i.ibb.co/jZTNW78Z/arbitrum32x32.jpg
+https://i.ibb.co/KjcdtJ2L/avalanche32x32.jpg
+https://i.ibb.co/svQd3jvL/gnosis32x32.jpg
+https://i.ibb.co/Y5W40LL/dot32x2.jpg
+https://i.ibb.co/yF4BY4Mb/solana32x32.jpg
+https://i.ibb.co/G3NmrwXc/ton32x32.jpg
+https://i.ibb.co/8nXLsBqB/sui32x32.jpg
+https://i.ibb.co/0RHpfPZt/aptos32x32.jpg
+https://i.ibb.co/HcsQyRf/cardano32x32.jpg
+https://i.ibb.co/F19ymGW/btc32x32.jpg
+https://i.ibb.co/vCM2hw6D/Dogecoin32x32.png
+https://i.ibb.co/qYmw4KQX/near32x32.png,                                                                    tambien necesito que se muestre dentro de  los circulos  el logo de la blockchain
+
+Veo que quieres actualizar los enlaces de los logos y asegurarte de que se muestren correctamente en los círculos. Te ayudo a actualizar el código con los nuevos enlaces.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>yagecoin swap bridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .headerbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      height: 56px;
+      background: transparent;
+      position: relative;
+    }
+    .app-logo {
+      height: 42px;
+      margin: 8px 0 8px 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .wallet-connect-btn {
+      background: #c2ff09;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 22px;
+      margin: 10px 24px 10px 0;
+      cursor: pointer;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 16px 0 #c2ff0933;
+    }
+    .wallet-connect-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .main-wrap {
+      min-height: calc(100vh - 56px);
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swap-card {
+      background: #232323;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 #0008;
+      max-width: 430px;
+      width: 98vw;
+      margin: 48px 0 0 0;
+      padding: 42px 35px 32px 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 290px;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.98);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .swap-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .swap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 24px;
+    }
+    .swap-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swap-circ {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      box-shadow: 0 0 16px 0 #00ffe9bb;
+      border: 2.5px solid #00ffe9cc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .swap-circ.to {
+      box-shadow: 0 0 16px 0 #c2ff0999;
+      border: 2.5px solid #c2ff09;
+    }
+    .swap-circ-inner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232323;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 7px #0009;
+      overflow: hidden;
+    }
+    .swap-circ-inner img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #232323;
+      display: block;
+      border: none;
+    }
+    .swap-circ-label {
+      font-size: 0.87rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* CUSTOM DROPDOWN */
+    .custom-dropdown {
+      width: 100%;
+      position: relative;
+      margin-bottom: 6px;
+      z-index: 5;
+    }
+    .custom-select-selected {
+      background: #111;
+      color: #fff;
+      padding: 11px 12px 11px 44px;
+      border: none;
+      border-bottom: 2px solid #444;
+      font-size: 1.05rem;
+      border-radius: 2px 2px 0 0;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.17s;
+      outline: none;
+    }
+    .custom-select-selected:after {
+      content: "";
+      position: absolute;
+      right: 16px;
+      top: 19px;
+      width: 0; height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #fff;
+      pointer-events: none;
+    }
+    .custom-select-logo {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #232323;
+      object-fit: contain;
+    }
+    .custom-options {
+      display: none;
+      position: absolute;
+      width: 100%;
+      max-height: 260px;
+      overflow-y: auto;
+      background: #111;
+      z-index: 10;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 24px #0009;
+    }
+    .custom-option {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 10px 10px 10px 45px;
+      font-size: 1.03rem;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.13s;
+      position: relative;
+    }
+    .custom-option img {
+      width: 23px;
+      height: 23px;
+      border-radius: 50%;
+      background: #232323;
+      object-fit: contain;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .custom-option:hover, .custom-option.selected {
+      background: #232323;
+    }
+
+    /* INPUTS */
+    .swap-amount-label, .swap-dest-label {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 4px;
+      margin-top: 9px;
+      font-weight: 500;
+      text-align: left;
+    }
+    .swap-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .swap-amount-input,
+    .swap-dest-input {
+      flex: 1;
+      background: #111 !important;
+      border: none;
+      border-bottom: 2px solid #444;
+      color: #fff !important;
+      font-size: 1.23rem;
+      font-family: inherit;
+      padding: 12px 0 12px 10px;
+      margin: 0;
+      outline: none;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .swap-amount-input:focus,
+    .swap-dest-input:focus {
+      border-bottom: 2px solid #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .swap-amount-input::placeholder,
+    .swap-dest-input::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+    .swap-max-btn {
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      margin-left: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .swap-max-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .swap-min-row {
+      font-size: 0.90rem;
+      color: #bbb;
+      margin-bottom: 12px;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .swap-btn {
+      width: 100%;
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 13px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      margin-bottom: 2px;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 24px 0 #c2ff0935;
+    }
+    .swap-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="headerbar">
+    <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
+    <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
+  </div>
+  <div class="main-wrap">
+    <form class="swap-card" autocomplete="off" onsubmit="event.preventDefault()">
+      <div class="swap-title">Send</div>
+      <div class="swap-row">
+        <!-- FROM -->
+        <div class="swap-col">
+          <div class="swap-circ" id="fromChainCircle">
+            <div class="swap-circ-inner" id="fromChainIcon">
+              <img id="fromChainImg" src="" alt="FROM" />
+            </div>
+          </div>
+          <div class="swap-circ-label">FROM</div>
+          <div class="custom-dropdown" id="fromDropdown"></div>
+        </div>
+        <!-- TO -->
+        <div class="swap-col">
+          <div class="swap-circ to" id="toChainCircle">
+            <div class="swap-circ-inner" id="toChainIcon">
+              <img id="toChainImg" src="" alt="TO" />
+            </div>
+          </div>
+          <div class="swap-circ-label">TO</div>
+          <div class="custom-dropdown" id="toDropdown"></div>
+        </div>
+      </div>
+      <!-- Amount -->
+      <div class="swap-amount-label">Amount</div>
+      <div class="swap-amount-row">
+        <input class="swap-amount-input" id="amountInput" type="number" placeholder="0.00" min="0" />
+        <button class="swap-max-btn" type="button" id="maxBtn">Max</button>
+      </div>
+      <div class="swap-min-row" id="minRow">
+        Minimum : 0.01 BNB | Available: 00 BNB
+      </div>
+      <!-- Destination -->
+      <div class="swap-dest-label">Destination Address</div>
+      <input class="swap-dest-input" id="destAddress" type="text" placeholder="" autocomplete="off">
+      <button class="swap-btn" id="swapBtn">Swap</button>
+    </form>
+  </div>
+  <script>
+    // Logos de blockchains actualizados con los nuevos enlaces
+    const chainIcons = {
+      bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+      eth: "https://i.ibb.co/WNjcgb09/ethereum32x32.jpg",
+      polygon: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      arbitrum: "https://i.ibb.co/jZTNW78Z/arbitrum32x32.jpg",
+      fantom: "https://i.ibb.co/nq0Kmc8z/logo-fantom.jpg",
+      avalanche: "https://i.ibb.co/KjcdtJ2L/avalanche32x32.jpg",
+      gnosis: "https://i.ibb.co/svQd3jvL/gnosis32x32.jpg",
+      dot: "https://i.ibb.co/Y5W40LL/dot32x2.jpg",
+      sol: "https://i.ibb.co/yF4BY4Mb/solana32x32.jpg",
+      ton: "https://i.ibb.co/G3NmrwXc/ton32x32.jpg",
+      sui: "https://i.ibb.co/8nXLsBqB/sui32x32.jpg",
+      aptos: "https://i.ibb.co/0RHpfPZt/aptos32x32.jpg",
+      ada: "https://i.ibb.co/HcsQyRf/cardano32x32.jpg",
+      btc: "https://i.ibb.co/F19ymGW/btc32x32.jpg",
+      doge: "https://i.ibb.co/vCM2hw6D/Dogecoin32x32.png",
+      matic: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      near: "https://i.ibb.co/qYmw4KQX/near32x32.png"
+    };
+
+    const chainLabels = {
+      bsc: "BSC - chain",
+      eth: "ETH - chain",
+      polygon: "Polygon - chain",
+      arbitrum: "Arbitrum - chain",
+      fantom: "Fantom - chain",
+      avalanche: "AVAX - chain",
+      gnosis: "Gnosis - chain",
+      dot: "DOT - network",
+      sol: "SOL - chain",
+      ton: "Ton - chain",
+      sui: "Sui - chain",
+      aptos: "Aptos - chain",
+      ada: "ADA - chain",
+      btc: "Bitcoin - chain",
+      doge: "Doge - chain",
+      matic: "Matic - chain",
+      near: "NEAR - chain"
+    };
+
+    // Mínimos lógicos por blockchain/token para el lado FROM
+    const minByChain = {
+      bsc: { symbol: "BNB", min: 0.01 },
+      eth: { symbol: "ETH", min: 0.002 },
+      polygon: { symbol: "MATIC", min: 2 },
+      arbitrum: { symbol: "ETH", min: 0.002 },
+      fantom: { symbol: "FTM", min: 5 },
+      avalanche: { symbol: "AVAX", min: 0.2 },
+      gnosis: { symbol: "xDAI", min: 2 },
+      dot: { symbol: "DOT", min: 0.1 },
+      sol: { symbol: "SOL", min: 0.01 },
+      ton: { symbol: "TON", min: 0.1 },
+      sui: { symbol: "SUI", min: 0.1 },
+      aptos: { symbol: "APT", min: 0.1 },
+      ada: { symbol: "ADA", min: 2 },
+      btc: { symbol: "BTC", min: 0.0001 },
+      doge: { symbol: "DOGE", min: 10 },
+      matic: { symbol: "MATIC", min: 2 },
+      near: { symbol: "NEAR", min: 1 }
+    };
+
+    // Custom select logic
+    function createDropdown(containerId, imgId, defaultValue, onChange) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      let selectedKey = defaultValue;
+
+      // Selected
+      const selected = document.createElement('div');
+      selected.className = "custom-select-selected";
+      selected.tabIndex = 0;
+
+      // Logo
+      const logo = document.createElement('img');
+      logo.className = "custom-select-logo";
+      logo.src = chainIcons[selectedKey];
+      logo.alt = selectedKey;
+      selected.appendChild(logo);
+
+      // Label text
+      const labelSpan = document.createElement('span');
+      labelSpan.textContent = chainLabels[selectedKey];
+      selected.appendChild(labelSpan);
+
+      // Options
+      const options = document.createElement('div');
+      options.className = "custom-options";
+      Object.keys(chainIcons).forEach(key => {
+        const opt = document.createElement('div');
+        opt.className = "custom-option";
+        if (key === selectedKey) opt.classList.add("selected");
+        const optLogo = document.createElement('img');
+        optLogo.src = chainIcons[key];
+        optLogo.alt = key;
+        opt.appendChild(optLogo);
+        opt.appendChild(document.createTextNode(chainLabels[key]));
+        opt.onclick = () => {
+          selectedKey = key;
+          logo.src = chainIcons[key];
+          logo.alt = key;
+          labelSpan.textContent = chainLabels[key];
+          Array.from(options.children).forEach(c => c.classList.remove("selected"));
+          opt.classList.add("selected");
+          options.style.display = "none";
+          onChange(key);
+        };
+        options.appendChild(opt);
+      });
+
+      selected.onclick = function(e) {
+        options.style.display = options.style.display === "block" ? "none" : "block";
+        e.stopPropagation();
+      };
+      selected.onblur = function() {
+        options.style.display = "none";
+      };
+
+      container.appendChild(selected);
+      container.appendChild(options);
+
+      // Inicial
+      onChange(selectedKey);
+
+      // Cierra el menú si haces click afuera
+      window.addEventListener('click', function() {
+        options.style.display = "none";
+      });
+    }
+
+    function updateFromChainVisuals(key) {
+      const fromChainImg = document.getElementById('fromChainImg');
+      fromChainImg.src = chainIcons[key];
+      fromChainImg.alt = chainLabels[key];
+      fromChainImg.style.display = 'block'; // Asegurar que se muestre
+      updateMinRow(key);
+      window._fromSelected = key;
+    }
+    
+    function updateToChainVisuals(key) {
+      const toChainImg = document.getElementById('toChainImg');
+      toChainImg.src = chainIcons[key];
+      toChainImg.alt = chainLabels[key];
+      toChainImg.style.display = 'block'; // Asegurar que se muestre
+      window._toSelected = key;
+    }
+    
+    function updateMinRow(key) {
+      const minRow = document.getElementById('minRow');
+      const amountInput = document.getElementById('amountInput');
+      const minObj = minByChain[key];
+      if (minObj) {
+        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+        amountInput.setAttribute("min", minObj.min);
+      } else {
+        minRow.innerHTML = `Minimum : 0 | Available: 00`;
+        amountInput.removeAttribute("min");
+      }
+    }
+
+    // Inicializa custom selects y logos
+    window.addEventListener("DOMContentLoaded", function() {
+      createDropdown("fromDropdown", "fromChainImg", "bsc", updateFromChainVisuals);
+      createDropdown("toDropdown", "toChainImg", "eth", updateToChainVisuals);
+    });
+
+    document.getElementById('maxBtn').onclick = function() {
+      const v = window._fromSelected || "bsc";
+      const minObj = minByChain[v];
+      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+    };
+
+    let walletAddress = null;
+    const walletBtn = document.getElementById('walletBtn');
+    walletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask or EVM-compatible wallet not found.");
+        return;
+      }
+      try {
+        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        walletAddress = await signer.getAddress();
+        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+        walletBtn.disabled = true;
+        walletBtn.style.background="#333";
+        walletBtn.style.color="#fff";
+        walletBtn.style.cursor="default";
+      } catch (e) {
+        alert("Wallet connection was cancelled or failed.");
+      }
+    };
+
+    document.getElementById('swapBtn').onclick = function(e) {
+      e.preventDefault();
+      if (!walletAddress) {
+        walletBtn.onclick();
+        return;
+      }
+      const fromKey = window._fromSelected || "bsc";
+      const toKey = window._toSelected || "eth";
+      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      if (isNaN(amount) || amount < fromMin) {
+        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+        return;
+      }
+      let logicAmount = amount;
+      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+    };
+  </script>
+  <!-- Ethers.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>yagecoin swap bridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .headerbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      height: 56px;
+      background: transparent;
+      position: relative;
+    }
+    .app-logo {
+      height: 42px;
+      margin: 8px 0 8px 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .wallet-connect-btn {
+      background: #c2ff09;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 22px;
+      margin: 10px 24px 10px 0;
+      cursor: pointer;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 16px 0 #c2ff0933;
+    }
+    .wallet-connect-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .main-wrap {
+      min-height: calc(100vh - 56px);
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swap-card {
+      background: #232323;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 #0008;
+      max-width: 430px;
+      width: 98vw;
+      margin: 48px 0 0 0;
+      padding: 42px 35px 32px 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 290px;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.98);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .swap-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .swap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 24px;
+    }
+    .swap-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swap-circ {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      box-shadow: 0 0 16px 0 #00ffe9bb;
+      border: 2.5px solid #00ffe9cc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .swap-circ.to {
+      box-shadow: 0 0 16px 0 #c2ff0999;
+      border: 2.5px solid #c2ff09;
+    }
+    .swap-circ-inner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232323;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 7px #0009;
+      overflow: hidden;
+    }
+    .swap-circ-inner img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #fff;
+      display: block !important;
+      border: none;
+      opacity: 1;
+    }
+    .swap-circ-label {
+      font-size: 0.87rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* CHAIN SELECT - NEGRO CON TEXTO BLANCO */
+    .chain-select {
+      width: 100%;
+      background: #111 !important;
+      color: #fff !important;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.17s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    .chain-select:hover,
+    .chain-select:focus {
+      border-color: #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .chain-select option {
+      background: #111 !important;
+      color: #fff !important;
+      padding: 8px;
+    }
+
+    /* INPUTS - NEGRO CON TEXTO BLANCO */
+    .swap-amount-label, .swap-dest-label {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 4px;
+      margin-top: 9px;
+      font-weight: 500;
+      text-align: left;
+    }
+    .swap-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .swap-amount-input,
+    .swap-dest-input {
+      flex: 1;
+      background: #111 !important;
+      border: none;
+      border-bottom: 2px solid #444;
+      color: #fff !important;
+      font-size: 1.23rem;
+      font-family: inherit;
+      padding: 12px 0 12px 10px;
+      margin: 0;
+      outline: none;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .swap-amount-input:focus,
+    .swap-dest-input:focus {
+      border-bottom: 2px solid #c2ff09;
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .swap-amount-input::placeholder,
+    .swap-dest-input::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+    .swap-max-btn {
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      margin-left: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .swap-max-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+    .swap-min-row {
+      font-size: 0.90rem;
+      color: #bbb;
+      margin-bottom: 12px;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .swap-btn {
+      width: 100%;
+      background: #c2ff09;
+      color: #111;
+      border: none;
+      border-radius: 13px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      margin-bottom: 2px;
+      transition: background 0.16s, color 0.18s;
+      box-shadow: 0 2px 24px 0 #c2ff0935;
+    }
+    .swap-btn:hover {
+      background: #e2ff75;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="headerbar">
+    <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
+    <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
+  </div>
+  <div class="main-wrap">
+    <form class="swap-card" autocomplete="off" onsubmit="event.preventDefault()">
+      <div class="swap-title">Send</div>
+      <div class="swap-row">
+        <!-- FROM -->
+        <div class="swap-col">
+          <div class="swap-circ" id="fromChainCircle">
+            <div class="swap-circ-inner" id="fromChainIcon">
+              <img id="fromChainImg" src="" alt="FROM" />
+            </div>
+          </div>
+          <div class="swap-circ-label">FROM</div>
+          <select class="chain-select" id="fromSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
+        </div>
+        <!-- TO -->
+        <div class="swap-col">
+          <div class="swap-circ to" id="toChainCircle">
+            <div class="swap-circ-inner" id="toChainIcon">
+              <img id="toChainImg" src="" alt="TO" />
+            </div>
+          </div>
+          <div class="swap-circ-label">TO</div>
+          <select class="chain-select" id="toSelect">
+            <option value="bsc">BSC - chain</option>
+            <option value="eth">ETH - chain</option>
+            <option value="polygon">Polygon - chain</option>
+            <option value="arbitrum">Arbitrum - chain</option>
+            <option value="fantom">Fantom - chain</option>
+            <option value="avalanche">AVAX - chain</option>
+            <option value="gnosis">Gnosis - chain</option>
+            <option value="dot">DOT - network</option>
+            <option value="sol">SOL - chain</option>
+            <option value="ton">Ton - chain</option>
+            <option value="sui">Sui - chain</option>
+            <option value="aptos">Aptos - chain</option>
+            <option value="ada">ADA - chain</option>
+            <option value="btc">Bitcoin - chain</option>
+            <option value="doge">Doge - chain</option>
+            <option value="matic">Matic - chain</option>
+            <option value="near">NEAR - chain</option>
+          </select>
+        </div>
+      </div>
+      <!-- Amount -->
+      <div class="swap-amount-label">Amount</div>
+      <div class="swap-amount-row">
+        <input class="swap-amount-input" id="amountInput" type="number" placeholder="0.00" min="0" />
+        <button class="swap-max-btn" type="button" id="maxBtn">Max</button>
+      </div>
+      <div class="swap-min-row" id="minRow">
+        Minimum : 0.01 BNB | Available: 00 BNB
+      </div>
+      <!-- Destination -->
+      <div class="swap-dest-label">Destination Address</div>
+      <input class="swap-dest-input" id="destAddress" type="text" placeholder="" autocomplete="off">
+      <button class="swap-btn" id="swapBtn">Swap</button>
+    </form>
+  </div>
+  <script>
+    // Logos de blockchains actualizados
+    const chainIcons = {
+      bsc: "https://i.ibb.co/Hfvbj3rP/BSCBNB32x32.jpg",
+      eth: "https://i.ibb.co/WNjcgb09/ethereum32x32.jpg",
+      polygon: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      arbitrum: "https://i.ibb.co/jZTNW78Z/arbitrum32x32.jpg",
+      fantom: "https://i.ibb.co/nq0Kmc8z/logo-fantom.jpg",
+      avalanche: "https://i.ibb.co/KjcdtJ2L/avalanche32x32.jpg",
+      gnosis: "https://i.ibb.co/svQd3jvL/gnosis32x32.jpg",
+      dot: "https://i.ibb.co/Y5W40LL/dot32x2.jpg",
+      sol: "https://i.ibb.co/yF4BY4Mb/solana32x32.jpg",
+      ton: "https://i.ibb.co/G3NmrwXc/ton32x32.jpg",
+      sui: "https://i.ibb.co/8nXLsBqB/sui32x32.jpg",
+      aptos: "https://i.ibb.co/0RHpfPZt/aptos32x32.jpg",
+      ada: "https://i.ibb.co/HcsQyRf/cardano32x32.jpg",
+      btc: "https://i.ibb.co/F19ymGW/btc32x32.jpg",
+      doge: "https://i.ibb.co/vCM2hw6D/Dogecoin32x32.png",
+      matic: "https://i.ibb.co/9934GM6X/polygon32x32.jpg",
+      near: "https://i.ibb.co/qYmw4KQX/near32x32.png"
+    };
+
+    const minByChain = {
+      bsc: { symbol: "BNB", min: 0.01 },
+      eth: { symbol: "ETH", min: 0.002 },
+      polygon: { symbol: "MATIC", min: 2 },
+      arbitrum: { symbol: "ETH", min: 0.002 },
+      fantom: { symbol: "FTM", min: 5 },
+      avalanche: { symbol: "AVAX", min: 0.2 },
+      gnosis: { symbol: "xDAI", min: 2 },
+      dot: { symbol: "DOT", min: 0.1 },
+      sol: { symbol: "SOL", min: 0.01 },
+      ton: { symbol: "TON", min: 0.1 },
+      sui: { symbol: "SUI", min: 0.1 },
+      aptos: { symbol: "APT", min: 0.1 },
+      ada: { symbol: "ADA", min: 2 },
+      btc: { symbol: "BTC", min: 0.0001 },
+      doge: { symbol: "DOGE", min: 10 },
+      matic: { symbol: "MATIC", min: 2 },
+      near: { symbol: "NEAR", min: 1 }
+    };
+
+    function updateMinRow(key) {
+      const minRow = document.getElementById('minRow');
+      const amountInput = document.getElementById('amountInput');
+      const minObj = minByChain[key];
+      if (minObj) {
+        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+        amountInput.setAttribute("min", minObj.min);
+      } else {
+        minRow.innerHTML = `Minimum : 0 | Available: 00`;
+        amountInput.removeAttribute("min");
+      }
+    }
+
+    // Inicializa logos y eventos
+    document.addEventListener("DOMContentLoaded", function() {
+      // Inicializar logos por defecto
+      document.getElementById('fromChainImg').src = chainIcons.bsc;
+      document.getElementById('toChainImg').src = chainIcons.eth;
+      
+      // Configurar el select FROM
+      const fromSelect = document.getElementById('fromSelect');
+      fromSelect.value = 'bsc';
+      fromSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('fromChainImg').src = chainIcons[selectedChain];
+        updateMinRow(selectedChain);
+        window._fromSelected = selectedChain;
+      });
+      
+      // Configurar el select TO
+      const toSelect = document.getElementById('toSelect');
+      toSelect.value = 'eth';
+      toSelect.addEventListener('change', function() {
+        const selectedChain = this.value;
+        document.getElementById('toChainImg').src = chainIcons[selectedChain];
+        window._toSelected = selectedChain;
+      });
+      
+      // Inicializar variables
+      window._fromSelected = "bsc";
+      window._toSelected = "eth";
+      updateMinRow("bsc");
+    });
+
+    document.getElementById('maxBtn').onclick = function() {
+      const v = window._fromSelected || "bsc";
+      const minObj = minByChain[v];
+      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+    };
+
+    let walletAddress = null;
+    const walletBtn = document.getElementById('walletBtn');
+    walletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask or EVM-compatible wallet not found.");
+        return;
+      }
+      try {
+        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        walletAddress = await signer.getAddress();
+        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+        walletBtn.disabled = true;
+        walletBtn.style.background="#333";
+        walletBtn.style.color="#fff";
+        walletBtn.style.cursor="default";
+      } catch (e) {
+        alert("Wallet connection was cancelled or failed.");
+      }
+    };
+
+    document.getElementById('swapBtn').onclick = function(e) {
+      e.preventDefault();
+      if (!walletAddress) {
+        walletBtn.onclick();
+        return;
+      }
+      const fromKey = window._fromSelected || "bsc";
+      const toKey = window._toSelected || "eth";
+      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      if (isNaN(amount) || amount < fromMin) {
+        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+        return;
+      }
+      let logicAmount = amount;
+      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+    };
+  </script>
+  <!-- Ethers.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>
+
