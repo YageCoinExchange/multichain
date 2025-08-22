@@ -1534,148 +1534,18 @@
         <h3 style="color:var(--accent-primary);margin-bottom:12px;">Últimos swaps</h3>
         <ul style="color:var(--text-primary);font-size:16px;">
             <li>Swap 17.5 SOL de Solana a Ethereum &rarr; <span style="color:var(--accent-primary);">Completado</span></li>
-            <li>Swap 120 YGCT de BSC a Polygon &rarr; <span style="color:var(--accent-primary);">Pendiente</span></li>
-            <li>Swap 0.15 BTC de Bitcoin a TON &rarr; <span style="color:var(--accent-secondary);">Fallido</span></li>
+            <li>Swap 120 YGCT de BSC a Polygon &rarr; <span style="color:var(--accent-primary);">Completado</span></li>
+            <li>Swap 0.15 BTC de Bitcoin a TON &rarr; <span style="color:var(--accent-secondary);">Completado</span></li>
         </ul>
     </div>
 
-    <!-- Panel de resumen / stats del usuario (puedes hacer esto dinámico con JS) -->
-    <div class="content-container" style="margin-top:20px;display:flex;flex-wrap:wrap;gap:25px;">
-        <div style="background:var(--bg-secondary);border-radius:10px;padding:18px;min-width:150px;">
-            <div style="color:var(--accent-primary);font-size:18px;font-weight:bold;">Swaps Totales</div>
-            <div style="color:var(--text-primary);font-size:22px;">17</div>
-        </div>
-        <div style="background:var(--bg-secondary);border-radius:10px;padding:18px;min-width:150px;">
-            <div style="color:var(--accent-primary);font-size:18px;font-weight:bold;">Comisión pagada</div>
-            <div style="color:var(--text-primary);font-size:22px;">$7.93</div>
-        </div>
-        <div style="background:var(--bg-secondary);border-radius:10px;padding:18px;min-width:150px;">
-            <div style="color:var(--accent-primary);font-size:18px;font-weight:bold;">Tokens swappeados</div>
-            <div style="color:var(--text-primary);font-size:22px;">2350 YGCT</div>
-        </div>
-    </div>
+   
 
-    <!-- Panel de información técnica (puedes poner aquí data sobre blockchains, contratos, etc) -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Información técnica</h3>
-        <ul style="color:var(--text-primary);font-size:16px;">
-            <li>Contrato YageCoin BSC: <span style="font-size:14px;">0x1234567890abcdef...</span></li>
-            <li>Contrato YageCoin Ethereum: <span style="font-size:14px;">0xabcdef1234567890...</span></li>
-            <li>Contrato YageCoin Solana: <span style="font-size:14px;">7q2n...eDgBp</span></li>
-        </ul>
-    </div>
-
-    <!-- Scripts adicionales para los paneles -->
-    <script>
-    // Ejemplo: Actualizar stats del usuario con JS
-    function actualizarStatsUsuario(stats) {
-        document.querySelectorAll('.content-container')[3].children[1].children[1].textContent = '$' + stats.comision;
-        document.querySelectorAll('.content-container')[3].children[2].children[1].textContent = stats.tokens + ' YGCT';
-    }
-    // Puedes llamar a actualizarStatsUsuario({comision: '8.23', tokens: '2450'}) para actualizar los valores
-    </script>
-
+   
     <!-- Final del body y html -->
 </body>
 </html>
-    <!-- Panel de estadísticas globales del bridge (opcional, ejemplo visual) -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Estadísticas Globales</h3>
-        <ul style="color:var(--text-primary);font-size:16px;">
-            <li>Swaps totales realizados: <span style="color:var(--accent-primary);font-weight:bold;">124,893</span></li>
-            <li>Usuarios activos: <span style="color:var(--accent-secondary);font-weight:bold;">2,562</span></li>
-            <li>Volumen total: <span style="color:var(--accent-primary);font-weight:bold;">$18,500,000+</span></li>
-        </ul>
-    </div>
-
-    <!-- Panel de roadmap y desarrollo -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Roadmap YageCoin Bridge</h3>
-        <ul style="color:var(--text-primary);font-size:16px;">
-            <li><b>Q3 2024:</b> Lanzamiento multichain, integración con TON y Bitcoin.</li>
-            <li><b>Q4 2024:</b> Soporte NFT cross-chain, auditoría de contratos.</li>
-            <li><b>Q1 2025:</b> API pública, integración con exchanges y wallets.</li>
-            <li><b>Q2 2025:</b> Movilidad de stablecoins y oráculos de precios.</li>
-        </ul>
-    </div>
-
-    <!-- Panel de actualizaciones y novedades -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Últimas novedades</h3>
-        <ul style="color:var(--text-primary);font-size:16px;">
-            <li>¡Bridge actualizado! Ahora soporta swaps entre 10 cadenas principales.</li>
-            <li>Comisiones reducidas en swaps de YGCT durante agosto.</li>
-            <li>Nuevo sistema de historial y notificaciones en tiempo real.</li>
-        </ul>
-    </div>
-
-    <!-- Panel de seguridad y auditoría -->
-    <div class="content-container" style="margin-top:20px;background:rgba(44,221,44,0.08);border:2px solid #4caf50;">
-        <h3 style="color:#4caf50;margin-bottom:12px;">Seguridad y auditoría</h3>
-        <p style="color:var(--text-primary);font-size:16px;">
-            YageCoin Bridge utiliza contratos auditados y prácticas avanzadas de seguridad para proteger tus fondos.  
-            Auditoría externa realizada por SecureDeFi (junio 2024).
-        </p>
-    </div>
-
-    <!-- Panel de enlaces rápidos -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Enlaces rápidos</h3>
-        <div style="display:flex;gap:18px;">
-            <a href="https://yagecoin.space/" target="_blank" style="color:var(--accent-primary);font-weight:bold;">YageCoin Exchange</a>
-            <a href="https://docs.yagecoin.space/" target="_blank" style="color:var(--accent-secondary);font-weight:bold;">Documentación</a>
-            <a href="https://github.com/yagecointoken" target="_blank" style="color:var(--accent-primary);font-weight:bold;">GitHub</a>
-        </div>
-    </div>
-
-    <!-- Aquí puedes seguir agregando paneles, secciones, o JS según tu archivo original y necesidades -->
-
-    <!-- Final del body y html (si necesitas más contenido, avísame) -->
-</body>
-</html>
-    <!-- Panel de agradecimiento y créditos -->
-    <div class="content-container" style="margin-top:40px;text-align:center;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">¡Gracias por usar YageCoin Bridge!</h3>
-        <p style="color:var(--text-primary);font-size:18px;">
-            Este proyecto es desarrollado por la comunidad YageCoin.<br>
-            <b>Desarrolladores:</b> yagecointoken, colaboradores y contributors globales.<br>
-            <b>Licencia:</b> MIT Open Source &copy; 2025.
-        </p>
-        <p style="margin-top:20px;">
-            <a href="https://github.com/yagecointoken" target="_blank" style="color:var(--accent-primary);font-size:20px;font-weight:bold;">Contribuye en GitHub</a>
-        </p>
-    </div>
-
-    <!-- Final: scripts globales, inicialización o utilidades opcionales -->
-    <script>
-    // Inicializa el theme según preferencia del usuario
-    (function() {
-        try {
-            if(window.localStorage.getItem('theme') === 'light') {
-                document.body.setAttribute('data-theme','light');
-            }
-        } catch(e){}
-    })();
-
-    // Guarda preferencia de theme si el usuario cambia
-    document.querySelector('.theme-toggle').onclick = function() {
-        const isLight = document.body.getAttribute('data-theme') === 'light';
-        if(isLight) {
-            document.body.removeAttribute('data-theme');
-            window.localStorage.setItem('theme','dark');
-        } else {
-            document.body.setAttribute('data-theme','light');
-            window.localStorage.setItem('theme','light');
-        }
-    };
-
-    // Ejemplo de animación para las partículas
-    document.querySelectorAll('.particle').forEach(function(particle, i) {
-        particle.style.top = (Math.random()*90+5) + '%';
-    });
-
-    // Si tienes otras inicializaciones globales, agrégalas aquí...
-
+   
     // Fin de scripts
     </script>
 </body>
