@@ -81,7 +81,7 @@
     }
     .swap-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       margin-bottom: 20px;
       gap: 24px;
@@ -91,7 +91,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
     }
     .swap-circ {
       width: 64px;
@@ -101,11 +101,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       margin-top: 2px;
       box-shadow: 0 0 16px 0 #00ffe9bb;
       border: 2.5px solid #00ffe9cc;
       transition: box-shadow 0.2s, border 0.2s;
+      position: relative;
     }
     .swap-circ.to {
       box-shadow: 0 0 16px 0 #c2ff0999;
@@ -119,29 +120,40 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.7rem;
       box-shadow: 0 2px 7px #0009;
       overflow: hidden;
+      position: relative;
+      padding: 0;
     }
-    .swap-circ-inner img {
+    .swap-circ-img {
       width: 32px;
       height: 32px;
-      object-fit: cover;
+      display: block;
+      object-fit: contain;
       border-radius: 50%;
       background: #fff;
-      display: block !important;
-      border: none;
-      opacity: 1;
     }
     .swap-circ-label {
-      font-size: 0.87rem;
+      font-size: 0.97rem;
       color: #ccc;
       letter-spacing: 0.04em;
       margin-top: 8px;
       font-weight: 600;
+      min-height: 1.5em;
+      text-align: center;
     }
-
-    /* CHAIN SELECT - NEGRO CON TEXTO BLANCO */
+    .swap-circ-role {
+      font-size: 0.80rem;
+      color: #c2ff09;
+      font-weight: bold;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      text-align: center;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      user-select: none;
+      display: block;
+    }
     .chain-select {
       width: 100%;
       background: #111 !important;
@@ -170,8 +182,6 @@
       color: #fff !important;
       padding: 8px;
     }
-
-    /* INPUTS - NEGRO CON TEXTO BLANCO */
     .swap-amount-label, .swap-dest-label {
       font-size: 1rem;
       color: #ccc;
@@ -257,7 +267,6 @@
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <div class="headerbar">
     <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" class="app-logo" alt="Yagecoin Logo">
     <button class="wallet-connect-btn" id="walletBtn">Connect Wallet</button>
@@ -269,11 +278,12 @@
         <!-- FROM -->
         <div class="swap-col">
           <div class="swap-circ" id="fromChainCircle">
-            <div class="swap-circ-inner" id="fromChainIcon">
-              <img id="fromChainImg" src="" alt="FROM" />
+            <div class="swap-circ-inner">
+              <img id="fromChainImg" class="swap-circ-img" src="" alt="FROM" />
             </div>
           </div>
-          <div class="swap-circ-label">FROM</div>
+          <span class="swap-circ-role">FROM</span>
+          <div class="swap-circ-label" id="fromChainLabel"></div>
           <select class="chain-select" id="fromSelect">
             <option value="bsc">BSC - chain</option>
             <option value="eth">ETH - chain</option>
@@ -297,11 +307,12 @@
         <!-- TO -->
         <div class="swap-col">
           <div class="swap-circ to" id="toChainCircle">
-            <div class="swap-circ-inner" id="toChainIcon">
-              <img id="toChainImg" src="" alt="TO" />
+            <div class="swap-circ-inner">
+              <img id="toChainImg" class="swap-circ-img" src="" alt="TO" />
             </div>
           </div>
-          <div class="swap-circ-label">TO</div>
+          <span class="swap-circ-role">TO</span>
+          <div class="swap-circ-label" id="toChainLabel"></div>
           <select class="chain-select" id="toSelect">
             <option value="bsc">BSC - chain</option>
             <option value="eth">ETH - chain</option>
@@ -339,152 +350,146 @@
     </form>
   </div>
   <script>
-    // Logos de blockchains actualizados
-    const chainIcons = {
-      sol: "https://yagecoin.space/wp-content/uploads/2025/08/solana32x32.jpg",
-      ton: "https://yagecoin.space/wp-content/uploads/2025/08/ton32x32.jpg",
-      sui: "https://yagecoin.space/wp-content/uploads/2025/08/sui32x32.jpg",
-      aptos: "https://yagecoin.space/wp-content/uploads/2025/08/aptos32x32.jpg",
-      ada: "https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo32x32.jpg",
-      btc: "https://yagecoin.space/wp-content/uploads/2025/08/btc32x32.jpg",
-      doge: "https://yagecoin.space/wp-content/uploads/2025/08/Dogecoin-logo-tumb-32x32-1.png",
-      matic: "https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.jpg", // CORREGIDO: "hhttps" a "https"
-      near: "https://yagecoin.space/wp-content/uploads/2025/08/near32x32.png",
-      bsc: "https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token32x32.jpg",
-      eth: "https://yagecoin.space/wp-content/uploads/2025/08/ethereum-icon-1.jpg",
-      arbitrum: "https://yagecoin.space/wp-content/uploads/2025/08/arbitrum32x32.jpg",
-      fantom: "https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.jpg",
-      avalanche: "https://yagecoin.space/wp-content/uploads/2025/08/avalanche32x32.jpg",
-      gnosis: "https://yagecoin.space/wp-content/uploads/2025/08/gnosis32x32.jpg",
-      dot: "https://yagecoin.space/wp-content/uploads/2025/08/dot32x2.jpg"
-    };
-
-    const minByChain = {
-      bsc: { symbol: "BNB", min: 0.01 },
-      eth: { symbol: "ETH", min: 0.002 },
-      polygon: { symbol: "MATIC", min: 2 },
-      arbitrum: { symbol: "ETH", min: 0.002 },
-      fantom: { symbol: "FTM", min: 5 },
-      avalanche: { symbol: "AVAX", min: 0.2 },
-      gnosis: { symbol: "xDAI", min: 2 },
-      dot: { symbol: "DOT", min: 0.1 },
-      sol: { symbol: "SOL", min: 0.01 },
-      ton: { symbol: "TON", min: 0.1 },
-      sui: { symbol: "SUI", min: 0.1 },
-      aptos: { symbol: "APT", min: 0.1 },
-      ada: { symbol: "ADA", min: 2 },
-      btc: { symbol: "BTC", min: 0.0001 },
-      doge: { symbol: "DOGE", min: 10 },
-      matic: { symbol: "MATIC", min: 2 },
-      near: { symbol: "NEAR", min: 1 }
-    };
-
-    function updateMinRow(key) {
-      const minRow = document.getElementById('minRow');
-      const amountInput = document.getElementById('amountInput');
-      const minObj = minByChain[key];
-      if (minObj) {
-        minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
-        amountInput.setAttribute("min", minObj.min);
-      } else {
-        minRow.innerHTML = `Minimum : 0 | Available: 00`;
-        amountInput.removeAttribute("min");
-      }
-    }
-
-    function updateChainImg(selectId, imgId) {
-      const val = document.getElementById(selectId).value;
-      const iconUrl = chainIcons[val];
-      const imgElem = document.getElementById(imgId);
-      imgElem.src = iconUrl ?? '';
-      imgElem.alt = val.toUpperCase();
-      imgElem.onerror = function() {
-        this.src = "";
-      };
-    }
-
     document.addEventListener("DOMContentLoaded", function() {
-      // Inicializar logos por defecto
-      updateChainImg('fromSelect', 'fromChainImg');
-      updateChainImg('toSelect', 'toChainImg');
-      
-      // Configurar el select FROM
-      const fromSelect = document.getElementById('fromSelect');
-      fromSelect.value = 'bsc';
-      updateChainImg('fromSelect', 'fromChainImg');
-      fromSelect.addEventListener('change', function() {
-        updateChainImg('fromSelect', 'fromChainImg');
+      // Logos con links universales (cryptologos)
+      const chainIcons = {https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token32x32.jpg",
+        eth: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=032",
+        polygon: "https://cryptologos.cc/logos/polygon-matic-logo.png?v=032",
+        arbitrum: "https://cryptologos.cc/logos/arbitrum-arb-logo.png?v=032",
+        fantom: "https://cryptologos.cc/logos/fantom-ftm-logo.png?v=032",
+        avalanche: "https://cryptologos.cc/logos/avalanche-avax-logo.png?v=032",
+        gnosis: "https://cryptologos.cc/logos/gnosis-gno-logo.png?v=032",
+        dot: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png?v=032",
+        sol: "https://cryptologos.cc/logos/solana-sol-logo.png?v=032",
+        ton: "https://cryptologos.cc/logos/toncoin-ton-logo.png?v=032",
+        sui: "https://cryptologos.cc/logos/sui-sui-logo.png?v=032",
+        aptos: "https://cryptologos.cc/logos/aptos-apt-logo.png?v=032",
+        ada: "https://cryptologos.cc/logos/cardano-ada-logo.png?v=032",
+        btc: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=032",
+        doge: "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=032",
+        matic: "https://cryptologos.cc/logos/polygon-matic-logo.png?v=032",
+        near: "https://cryptologos.cc/logos/near-protocol-near-logo.png?v=032"
+      };
+
+      const minByChain = {
+        bsc: { symbol: "BNB", min: 0.01 },
+        eth: { symbol: "ETH", min: 0.002 },
+        polygon: { symbol: "MATIC", min: 2 },
+        arbitrum: { symbol: "ETH", min: 0.002 },
+        fantom: { symbol: "FTM", min: 5 },
+        avalanche: { symbol: "AVAX", min: 0.2 },
+        gnosis: { symbol: "xDAI", min: 2 },
+        dot: { symbol: "DOT", min: 0.1 },
+        sol: { symbol: "SOL", min: 0.01 },
+        ton: { symbol: "TON", min: 0.1 },
+        sui: { symbol: "SUI", min: 0.1 },
+        aptos: { symbol: "APT", min: 0.1 },
+        ada: { symbol: "ADA", min: 2 },
+        btc: { symbol: "BTC", min: 0.0001 },
+        doge: { symbol: "DOGE", min: 10 },
+        matic: { symbol: "MATIC", min: 2 },
+        near: { symbol: "NEAR", min: 1 }
+      };
+
+      function updateChain(side) {
+        const select = document.getElementById(side + 'Select');
+        const value = select.value;
+        const img = document.getElementById(side + 'ChainImg');
+        const label = document.getElementById(side + 'ChainLabel');
+        img.src = chainIcons[value] || "";
+        img.alt = value.toUpperCase();
+        label.textContent = select.options[select.selectedIndex].text;
+        img.onerror = function() {
+          this.onerror = null;
+          this.src = "data:image/svg+xml;utf8,<svg width='32' height='32' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='16' r='16' fill='%23232323'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='10' font-family='Arial'>?</text></svg>";
+        };
+      }
+
+      function updateMinRow(key) {
+        const minRow = document.getElementById('minRow');
+        const amountInput = document.getElementById('amountInput');
+        const minObj = minByChain[key];
+        if (minObj) {
+          minRow.innerHTML = `Minimum : ${minObj.min} ${minObj.symbol} | Available: 00 ${minObj.symbol}`;
+          amountInput.setAttribute("min", minObj.min);
+        } else {
+          minRow.innerHTML = `Minimum : 0 | Available: 00`;
+          amountInput.removeAttribute("min");
+        }
+      }
+
+      document.getElementById('fromSelect').addEventListener('change', function() {
+        updateChain('from');
         updateMinRow(this.value);
         window._fromSelected = this.value;
       });
-
-      // Configurar el select TO
-      const toSelect = document.getElementById('toSelect');
-      toSelect.value = 'eth';
-      updateChainImg('toSelect', 'toChainImg');
-      toSelect.addEventListener('change', function() {
-        updateChainImg('toSelect', 'toChainImg');
+      document.getElementById('toSelect').addEventListener('change', function() {
+        updateChain('to');
         window._toSelected = this.value;
       });
 
-      // Inicializar variables
-      window._fromSelected = "bsc";
-      window._toSelected = "eth";
-      updateMinRow("bsc");
+      // Inicializa con BSC
+      document.getElementById('fromSelect').value = 'bsc';
+      document.getElementById('toSelect').value = 'bsc';
+      updateChain('from');
+      updateChain('to');
+      window._fromSelected = 'bsc';
+      window._toSelected = 'bsc';
+      updateMinRow('bsc');
+
+      document.getElementById('maxBtn').onclick = function() {
+        const v = window._fromSelected || "bsc";
+        const minObj = minByChain[v];
+        document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
+      };
+
+      // Wallet simulación
+      let walletAddress = null;
+      const walletBtn = document.getElementById('walletBtn');
+      walletBtn.onclick = async function() {
+        if (!window.ethereum) {
+          alert("MetaMask or EVM-compatible wallet not found.");
+          return;
+        }
+        try {
+          const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          const signer = provider.getSigner();
+          walletAddress = await signer.getAddress();
+          walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+          walletBtn.disabled = true;
+          walletBtn.style.background="#333";
+          walletBtn.style.color="#fff";
+          walletBtn.style.cursor="default";
+        } catch (e) {
+          alert("Wallet connection was cancelled or failed.");
+        }
+      };
+
+      document.getElementById('swapBtn').onclick = function(e) {
+        e.preventDefault();
+        if (!walletAddress) {
+          walletBtn.onclick();
+          return;
+        }
+        const fromKey = window._fromSelected || "bsc";
+        const toKey = window._toSelected || "bsc";
+        const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
+        const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
+        const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
+        const amount = parseFloat(document.getElementById('amountInput').value);
+        if (isNaN(amount) || amount < fromMin) {
+          alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
+          return;
+        }
+        let logicAmount = amount;
+        if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
+        else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
+        else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
+        alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
+      };
     });
-
-    document.getElementById('maxBtn').onclick = function() {
-      const v = window._fromSelected || "bsc";
-      const minObj = minByChain[v];
-      document.getElementById('amountInput').value = minObj ? (minObj.min * 2).toFixed(6) : "1.0000";
-    };
-
-    let walletAddress = null;
-    const walletBtn = document.getElementById('walletBtn');
-    walletBtn.onclick = async function() {
-      if (!window.ethereum) {
-        alert("MetaMask or EVM-compatible wallet not found.");
-        return;
-      }
-      try {
-        const provider = new window.ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        walletAddress = await signer.getAddress();
-        walletBtn.textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
-        walletBtn.disabled = true;
-        walletBtn.style.background="#333";
-        walletBtn.style.color="#fff";
-        walletBtn.style.cursor="default";
-      } catch (e) {
-        alert("Wallet connection was cancelled or failed.");
-      }
-    };
-
-    document.getElementById('swapBtn').onclick = function(e) {
-      e.preventDefault();
-      if (!walletAddress) {
-        walletBtn.onclick();
-        return;
-      }
-      const fromKey = window._fromSelected || "bsc";
-      const toKey = window._toSelected || "eth";
-      const fromMin = minByChain[fromKey] ? minByChain[fromKey].min : 0;
-      const fromSymbol = minByChain[fromKey] ? minByChain[fromKey].symbol : "";
-      const toSymbol = minByChain[toKey] ? minByChain[toKey].symbol : "";
-      const amount = parseFloat(document.getElementById('amountInput').value);
-      if (isNaN(amount) || amount < fromMin) {
-        alert(`El mínimo para esta red es ${fromMin} ${fromSymbol}`);
-        return;
-      }
-      let logicAmount = amount;
-      if (fromKey === "btc") logicAmount = (amount * 27000).toFixed(2);
-      else if (fromKey === "doge") logicAmount = (amount * 0.15).toFixed(2);
-      else if (fromKey === "eth" && toKey === "btc") logicAmount = (amount * 0.06).toFixed(6);
-      alert(`Has simulado un bridge/swap de ${amount} ${fromSymbol} a ${logicAmount} ${toSymbol}\n\nEsto es un clon visual, para swap real necesitas integración web3 y backend.`);
-    };
   </script>
-  <!-- Ethers.js desde CDN -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </body>
 </html>
