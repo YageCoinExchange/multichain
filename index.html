@@ -1004,8 +1004,46 @@
         </div>
     </div>
     <div class="main-container">
-        <div id="bridge-swap">
-            <h2 style="color:#b5ce73;text-align:center;margin-bottom:24px;">Send</h2>
+<div id="bridge-swap">
+    <h2>Send</h2>
+    <div class="content-container">
+        <div class="select-container">
+            <label>FROM</label>
+            <select id="from-chain" class="chain-select">
+                <option value="eth">Ethereum</option>
+                <option value="bsc">BSC</option>
+                <option value="sol">Solana</option>
+                <!-- más opciones... -->
+            </select>
+        </div>
+        <div class="select-container">
+            <label>TO</label>
+            <select id="to-chain" class="chain-select">
+                <option value="eth">Ethereum</option>
+                <option value="bsc">BSC</option>
+                <option value="sol">Solana</option>
+            </select>
+        </div>
+    </div>
+    <div class="input-container">
+        <label for="asset">Asset</label>
+        <input id="asset" type="text" readonly>
+    </div>
+    <div class="input-container" style="position:relative;">
+        <label for="amount">Amount</label>
+        <input id="amount" type="number" placeholder="0.00" style="padding-right:60px;">
+        <button id="max-btn" type="button" style="position:absolute;top:31px;right:10px;padding:6px 18px;font-size:14px;border-radius:8px;border:none;background:#b5ce73;color:#222;cursor:pointer;">MAX</button>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#b5ce73;margin-top:5px;">
+            <span id="minimum-info">Minimum: 0.1 ETH</span>
+            <span id="available-info">Available: 2.5 ETH</span>
+        </div>
+    </div>
+    <div class="input-container">
+        <label for="destination">Destination Address</label>
+        <input id="destination" type="text" placeholder="Enter address">
+    </div>
+    <button id="swap-btn" style="width:100%;padding:18px 0;font-size:18px;border-radius:15px;background:#b5ce73;color:#222;font-weight:bold;">Swap Bridge</button>
+</div>
             <!-- BLOQUE SWAP PARA COPIAR Y PEGAR EN TU ARCHIVO index.html -->
 
             <!-- 1. Reemplaza el bloque actual de los logos/cadenas/arrow por este: -->
@@ -1076,52 +1114,6 @@
                 <input id="asset" class="chain-select" value="Solana Token" readonly>
             </div>
 
-            <!-- Wallet Connect Modal -->
-<div class="wallet-modal" id="wallet-modal">
-    <div class="wallet-modal-content">
-        <div class="wallet-modal-header">
-            <span class="wallet-modal-title">Connect a wallet</span>
-            <button class="wallet-close" id="wallet-close">&times;</button>
-        </div>
-        <input type="text" id="wallet-search" placeholder="Search for a wallet" style="width:100%;margin-bottom:15px;padding:8px;border-radius:10px;">
-        <div id="wallet-list">
-            <!-- Lista de wallets con logo -->
-            <div class="wallet-option" data-wallet="walletconnect">
-                <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png" class="wallet-logo">
-                <span class="wallet-name">WalletConnect</span>
-            </div>
-            <div class="wallet-option" data-wallet="injected">
-                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" class="wallet-logo">
-                <span class="wallet-name">Injected Wallet</span>
-            </div>
-            <div class="wallet-option" data-wallet="metamask">
-                <img src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" class="wallet-logo">
-                <span class="wallet-name">MetaMask</span>
-            </div>
-            <div class="wallet-option" data-wallet="rabby">
-                <img src="https://rabby.io/assets/img/logo.png" class="wallet-logo">
-                <span class="wallet-name">Install Rabby Wallet</span>
-            </div>
-            <div class="wallet-option" data-wallet="nightly">
-                <img src="https://nightly.app/favicon.ico" class="wallet-logo">
-                <span class="wallet-name">Install Nightly</span>
-            </div>
-            <div class="wallet-option" data-wallet="coinbase">
-                <img src="https://avatars.githubusercontent.com/u/1885080?s=200&v=4" class="wallet-logo">
-                <span class="wallet-name">Install Coinbase Wallet</span>
-            </div>
-            <div class="wallet-option" data-wallet="backpack">
-                <img src="https://backpack.app/favicon.ico" class="wallet-logo">
-                <span class="wallet-name">Install Backpack</span>
-            </div>
-            <div class="wallet-option" data-wallet="phantom">
-                <img src="https://phantom.app/favicon.ico" class="wallet-logo">
-                <span class="wallet-name">Install Phantom</span>
-            </div>
-        </div>
-    </div>
-</div>
-
             <!-- 4. JS para cambiar logos según la selección -->
             <script>
                 function updateLogo(selectId, imgId) {
@@ -1136,6 +1128,96 @@
                         logoElem.style.display = 'none';
                     }
                 }
+                // Actualiza el asset automáticamente según la moneda TO
+const toChain = document.getElementById('to-chain');
+const asset = document.getElementById('asset');
+const fromChain = document.getElementById('from-chain');
+const minimumInfo = document.getElementById('minimum-info');
+const availableInfo = document.getElementById('available-info');
+const amountInput = document.getElementById('amount');
+const maxBtn = document.getElementById('max-btn');
+
+// Ejemplo de datos por blockchain (pon tus valores reales)
+const chainAssets = {
+    'ETH': 'Ethereum',
+    'BSC': 'BNB',
+    'SOL': 'Solana'
+    'MATIC': 'polygon',
+    'ARB': 'arbitrum',
+    'FTM': 'fantom'
+    'AVAX': 'avalanche',
+    'GNO': 'gnosis',
+    'DOT': 'Polkadot '
+    'TON': 'The Open Network',
+    'SUI': 'Sui',
+    'APT': 'Aptos'
+    'Near': 'Near',
+    'ADA': 'Cardano',
+    'BTC': 'Bitcoin'
+    'DOGE': 'Dogecoin',
+    'MATIC': 'matic'    
+};
+const chainMinimums = {
+    ETH:    '0.01 ETH',         // Ethereum
+    BSC:    '0.02 BNB',         // Binance Smart Chain
+    SOL:    '0.05 SOL',         // Solana
+    MATIC:  '10 MATIC',         // Polygon
+    ARB:    '0.02 ARB',         // Arbitrum
+    FTM:    '1 FTM',            // Fantom
+    AVAX:   '0.05 AVAX',        // Avalanche
+    GNO:    '0.01 GNO',         // Gnosis
+    DOT:    '0.1 DOT',          // Polkadot
+    TON:    '0.5 TON',          // The Open Network
+    SUI:    '0.2 SUI',          // Sui
+    APT:    '0.1 APT',          // Aptos
+    NEAR:   '0.5 NEAR',         // Near
+    ADA:    '1 ADA',            // Cardano
+    BTC:    '0.0001 BTC',       // Bitcoin
+    DOGE:   '10 DOGE',          // Dogecoin
+};
+
+const chainAvailable = {
+    ETH:    '2.35 ETH',
+    BSC:    '5.10 BNB',
+    SOL:    '19.2 SOL',
+    MATIC:  '320 MATIC',
+    ARB:    '7.4 ARB',
+    FTM:    '65 FTM',
+    AVAX:   '4.7 AVAX',
+    GNO:    '0.15 GNO',
+    DOT:    '11.8 DOT',
+    TON:    '35 TON',
+    SUI:    '8.2 SUI',
+    APT:    '6.8 APT',
+    NEAR:   '12 NEAR',
+    ADA:    '120 ADA',
+    BTC:    '0.018 BTC',
+    DOGE:   '1800 DOGE',
+};
+
+function updateAsset() {
+    const to = toChain.value;
+    asset.value = chainAssets[to] || to.toUpperCase();
+}
+function updateInfo() {
+    const from = fromChain.value;
+    minimumInfo.textContent = 'Minimum: ' + (chainMinimums[from] || '0');
+    availableInfo.textContent = 'Available: ' + (chainAvailable[from] || '0');
+}
+toChain.addEventListener('change', updateAsset);
+fromChain.addEventListener('change', updateInfo);
+window.addEventListener('DOMContentLoaded', () => {
+    updateAsset();
+    updateInfo();
+});
+
+// MAX button funcionalidad
+maxBtn.onclick = () => {
+    const from = fromChain.value;
+    // Tomar solo el número, no el texto completo
+    const available = (chainAvailable[from] || '0').split(' ')[0];
+    amountInput.value = available;
+};
                 document.getElementById('from-chain').addEventListener('change', function() {
                     updateLogo('from-chain', 'from-logo');
                 });
@@ -1196,6 +1278,27 @@
                 transition: transform 0.3s;
                 animation: spinArrow 2s linear infinite;
             }
+                #max-btn {
+    position: absolute;
+    top: 31px;
+    right: 10px;
+    padding: 6px 18px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    background: #b5ce73;
+    color: #222;
+    cursor: pointer;
+}
+#swap-btn {
+    width: 100%;
+    padding: 18px 0;
+    font-size: 18px;
+    border-radius: 15px;
+    background: #b5ce73;
+    color: #222;
+    font-weight: bold;
+}
             .swap-arrow-icon {
                 font-size: 28px;
                 color: var(--accent-primary);
@@ -1365,109 +1468,8 @@
     <!-- Ejemplo de continuación de tu bridge, transacciones, paneles, etc -->
     <!-- Puedes añadir aquí los paneles, secciones o scripts que ya tenía tu archivo original. -->
 
-    <!-- Panel de historial de transacciones -->
-    <div class="history-panel">
-        <div class="history-header">
-            <span>Transaction History</span>
-            <span class="live-indicator">
-                <span class="live-dot"></span>
-                Live
-            </span>
-        </div>
-        <!-- Ejemplo de transacciones, puedes reemplazar o añadir más dinámicamente -->
-        <div class="history-item">
-            <span>Swap 100 YGCT from BSC to SOL</span>
-            <span class="tx-status completed">Completed</span>
-        </div>
-        <div class="history-item">
-            <span>Swap 50 YGCT from ETH to POLYGON</span>
-            <span class="tx-status pending">Pending</span>
-        </div>
-        <div class="history-item">
-            <span>Swap 25 YGCT from SOL to BTC</span>
-            <span class="tx-status failed">Failed</span>
-        </div>
-        <!-- ... aquí continúan tus registros originales ... -->
-    </div>
+   
 
-    <!-- Panel de Fee Calculator (puedes ponerlo donde lo tenías antes o debajo del swap) -->
-    <div class="fee-calculator">
-        <div class="fee-row">
-            <span class="fee-label">Bridge Fee</span>
-            <span class="fee-value">0.25%</span>
-        </div>
-        <div class="fee-row">
-            <span class="fee-label">Network Fee</span>
-            <span class="fee-value">0.003 SOL</span>
-        </div>
-        <div class="fee-row">
-            <span class="fee-label">Total Fee</span>
-            <span class="fee-value">≈ $0.27</span>
-        </div>
-    </div>
-
-    <!-- Panel de precios (ejemplo) -->
-    <div class="price-display">
-        <div class="price-grid">
-            <div class="price-item">
-                <div class="price-info">
-                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" class="price-icon">
-                    <span class="price-symbol">SOL</span>
-                </div>
-                <span class="price-value">$20.15</span>
-                <span class="price-change positive">+2.1%</span>
-            </div>
-            <div class="price-item">
-                <div class="price-info">
-                    <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" class="price-icon">
-                    <span class="price-symbol">BNB</span>
-                </div>
-                <span class="price-value">$218.35</span>
-                <span class="price-change negative">-0.4%</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sección de ajustes avanzados (ejemplo) -->
-    <div class="settings-panel">
-        <div class="settings-header" onclick="document.getElementById('advanced-settings').classList.toggle('show')">
-            <span>Advanced Settings</span>
-        </div>
-        <div id="advanced-settings" class="settings-content">
-            <div class="setting-row">
-                <span class="setting-label">Slippage Tolerance</span>
-                <span class="slippage-buttons">
-                    <button class="slippage-btn active">0.5%</button>
-                    <button class="slippage-btn">1%</button>
-                    <button class="slippage-btn">2%</button>
-                    <span class="custom-slippage">
-                        <input class="slippage-input" type="number" min="0.1" step="0.1" placeholder="Custom">
-                        <span>%</span>
-                    </span>
-                </span>
-            </div>
-            <div class="setting-row">
-                <span class="setting-label">Gas Speed</span>
-                <span class="gas-options">
-                    <span class="gas-option active">
-                        <span class="gas-speed">Fast</span>
-                        <span class="gas-price">10 Gwei</span>
-                        <span class="gas-time">~15s</span>
-                    </span>
-                    <span class="gas-option">
-                        <span class="gas-speed">Standard</span>
-                        <span class="gas-price">7 Gwei</span>
-                        <span class="gas-time">~30s</span>
-                    </span>
-                    <span class="gas-option">
-                        <span class="gas-speed">Slow</span>
-                        <span class="gas-price">5 Gwei</span>
-                        <span class="gas-time">~60s</span>
-                    </span>
-                </span>
-            </div>
-        </div>
-    </div>
     <!-- Continúan paneles, scripts y contenido original del archivo (más ejemplos y estructura para llegar a 1800+) -->
 
     <!-- Panel de ayuda / FAQ -->
@@ -1481,25 +1483,6 @@
             <li><b>¿Cuáles son las comisiones?</b> Consulta el panel de fee calculator para ver las comisiones actuales.</li>
             <li><b>¿Cómo veo el historial?</b> El panel de historial muestra tus swaps recientes.</li>
         </ul>
-    </div>
-
-    <!-- Panel de contacto / soporte -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Soporte y contacto</h3>
-        <p style="color:var(--text-primary);font-size:16px;">
-            ¿Dudas? Escribe a <a href="mailto:soporte@yagecoin.space" style="color:var(--accent-primary);">soporte@yagecoin.space</a>
-            o únete a nuestro <a href="https://t.me/yagecoin" target="_blank" style="color:var(--accent-secondary);">Telegram</a>.
-        </p>
-    </div>
-
-    <!-- Panel de social y comunidad -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Comunidad YageCoin</h3>
-        <div style="display:flex;gap:12px;">
-            <a href="https://twitter.com/yagecoin" target="_blank" style="color:var(--accent-primary);">Twitter</a>
-            <a href="https://t.me/yagecoin" target="_blank" style="color:var(--accent-secondary);">Telegram</a>
-            <a href="https://yagecoin.space/" target="_blank" style="color:var(--accent-primary);">Sitio web</a>
-        </div>
     </div>
 
     <!-- Panel de advertencias (ejemplo) -->
@@ -1527,26 +1510,6 @@
 
     // ... aquí puedes seguir pegando JS original o personalizado de tu archivo bridge ...
     </script>
-    <!-- Continúa contenido extra y scripts para completar el archivo -->
 
-    <!-- Panel de últimos swaps (ejemplo, puedes mostrar dinámicamente) -->
-    <div class="content-container" style="margin-top:20px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Últimos swaps</h3>
-        <ul style="color:var(--text-primary);font-size:16px;">
-            <li>Swap 17.5 SOL de Solana a Ethereum &rarr; <span style="color:var(--accent-primary);">Completado</span></li>
-            <li>Swap 120 YGCT de BSC a Polygon &rarr; <span style="color:var(--accent-primary);">Completado</span></li>
-            <li>Swap 0.15 BTC de Bitcoin a TON &rarr; <span style="color:var(--accent-secondary);">Completado</span></li>
-        </ul>
-    </div>
-
-   
-
-   
-    <!-- Final del body y html -->
-</body>
-</html>
-   
-    // Fin de scripts
-    </script>
 </body>
 </html>
