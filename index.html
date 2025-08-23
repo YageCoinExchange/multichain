@@ -3,30 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YageCoin Multichain Bridge - Cross-chain Swap</title>
+    <title>YageCoin Multichain Bridge</title>
     <style>
         :root {
             --bg-primary: linear-gradient(135deg, #0b1322 0%, #1a485d 50%, #166c61 100%);
-            --bg-secondary: rgba(26, 72, 93, 0.9);
-            --bg-tertiary: rgba(11, 19, 34, 0.8);
+            --bg-secondary: rgba(26, 72, 93, 0.95);
+            --bg-tertiary: rgba(11, 19, 34, 0.9);
+            --input-bg: #1e3a8a;
             --accent-primary: #b5ce73;
             --accent-secondary: #55a273;
             --text-primary: white;
             --text-secondary: #b5ce73;
             --border-color: rgba(181, 206, 115, 0.3);
             --shadow-color: rgba(181, 206, 115, 0.4);
-        }
-
-        [data-theme="light"] {
-            --bg-primary: linear-gradient(135deg, #f0f4f8 0%, #e8f5e8 50%, #d4f0d0 100%);
-            --bg-secondary: rgba(255, 255, 255, 0.95);
-            --bg-tertiary: rgba(248, 250, 252, 0.9);
-            --accent-primary: #2d7d32;
-            --accent-secondary: #388e3c;
-            --text-primary: #1a202c;
-            --text-secondary: #2d7d32;
-            --border-color: rgba(45, 125, 50, 0.3);
-            --shadow-color: rgba(45, 125, 50, 0.2);
         }
 
         * {
@@ -38,14 +27,16 @@
         body {
             background: var(--bg-primary);
             min-height: 100vh;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-primary);
             position: relative;
             overflow-x: hidden;
             transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Fondo espacial animado */
+        /* Animated background */
         body::before {
             content: '';
             position: fixed;
@@ -75,8 +66,12 @@
             z-index: 1000;
             background: var(--bg-secondary);
             border: 2px solid var(--border-color);
-            border-radius: 25px;
-            padding: 8px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px var(--shadow-color);
@@ -103,7 +98,6 @@
             background: var(--bg-tertiary);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
-            transition: all 0.5s ease;
         }
 
         .logo-container {
@@ -113,14 +107,14 @@
         }
 
         .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(181, 206, 115, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(181, 206, 115, 0.5);
         }
 
         .brand-text {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
@@ -131,70 +125,21 @@
         #wallet-address {
             color: var(--text-secondary);
             font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
         }
 
         #connect-wallet, #disconnect-wallet {
             background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
             color: var(--bg-tertiary);
             border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
+            padding: 10px 20px;
+            border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px var(--shadow-color);
-        }
-
-        /* Network Transition Animation */
-        .network-transition {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .network-transition::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            transition: left 0.8s ease;
-        }
-
-        .network-transition.animating::before {
-            left: 100%;
-        }
-
-        /* Swap Arrow Animation */
-        .swap-arrow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-secondary);
-            border: 2px solid var(--accent-primary);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .swap-arrow:hover {
-            transform: translate(-50%, -50%) rotate(180deg) scale(1.1);
-            box-shadow: 0 0 20px var(--accent-primary);
-        }
-
-        .swap-arrow::before {
-            content: '⇄';
-            font-size: 20px;
-            color: var(--accent-primary);
-            font-weight: bold;
+            font-size: 14px;
         }
 
         #connect-wallet:hover, #disconnect-wallet:hover {
@@ -207,26 +152,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 140px);
+            flex: 1;
             padding: 20px;
         }
 
-        #bridge-swap {
-            background: var(--bg-secondary);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            transition: all 0.5s ease;
-            position: relative;
-        }
-
-        /* Transaction History Panel */
-        .history-panel {
+        .bridge-container {
             background: var(--bg-secondary);
             backdrop-filter: blur(20px);
             border-radius: 20px;
@@ -234,259 +164,178 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 500px;
-            margin: 20px auto;
-            max-height: 400px;
-            overflow-y: auto;
-            transition: all 0.5s ease;
-        }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            max-width: 450px;
+            position: relative;
         }
 
-        .history-item {
-            padding: 15px;
-            background: var(--bg-tertiary);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--accent-primary);
-            transition: all 0.3s ease;
-            transform: translateX(-10px);
-            opacity: 0;
-            animation: slideInHistory 0.5s ease forwards;
-        }
-
-        .history-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-
-        @keyframes slideInHistory {
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .history-item:nth-child(odd) { animation-delay: 0.1s; }
-        .history-item:nth-child(even) { animation-delay: 0.2s; }
-
-        .tx-status {
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 12px;
+        .bridge-title {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
             font-weight: bold;
-        }
-
-        .tx-status.completed {
-            background: linear-gradient(45deg, #4caf50, #66bb6a);
-            color: white;
-        }
-
-        .tx-status.pending {
-            background: linear-gradient(45deg, #ff9800, #ffb74d);
-            color: white;
-        }
-
-        .tx-status.failed {
-            background: linear-gradient(45deg, #f44336, #e57373);
-            color: white;
-        }
-
-        /* Fee Calculator */
-        .fee-calculator {
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .fee-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .fee-row:last-child {
-            border-bottom: none;
-            font-weight: bold;
-            font-size: 18px;
             color: var(--accent-primary);
         }
 
-        .fee-label {
-            color: var(--text-secondary);
+        /* Chain Selection Cards */
+        .chain-cards {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
         }
 
-        .fee-value {
-            color: var(--text-primary);
-            font-weight: bold;
-        }
-
-        #bridge-swap h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 32px;
-            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .content-container {
+        .chain-card {
+            width: 140px;
+            height: 100px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--accent-primary);
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
+            justify-content: center;
             position: relative;
-            transition: all 0.5s ease;
+            transition: all 0.3s ease;
         }
 
-        .content-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 15px;
-            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-            padding: 2px;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: destination-out;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-        }
-
-        /* Chain Animation Effects */
-        .chain-switching {
-            animation: chainPulse 1s ease-in-out;
-        }
-
-        @keyframes chainPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); box-shadow: 0 0 30px var(--accent-primary); }
-            100% { transform: scale(1); }
-        }
-
-        .chain-logo-container {
-            position: relative;
-            transition: all 0.5s ease;
-        }
-
-        .chain-logo-container.changing {
-            animation: logoFlip 1s ease-in-out;
-        }
-
-        @keyframes logoFlip {
-            0% { transform: rotateY(0deg); }
-            50% { transform: rotateY(90deg); }
-            100% { transform: rotateY(0deg); }
+        .chain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-color);
         }
 
         .chain-logo {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            margin-bottom: 10px;
-            box-shadow: 0 0 15px var(--shadow-color);
+            margin-bottom: 8px;
             transition: all 0.3s ease;
+            object-fit: cover;
         }
 
-        .coin-holder {
-            color: var(--text-secondary);
+        .chain-label {
+            color: var(--accent-primary);
             font-weight: bold;
             font-size: 14px;
         }
 
-        .chain-select, #asset, #withdrawAmount, #solwallet {
-            width: 100%;
-            padding: 15px;
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            color: ar(--bg-tertiary);
-            font-size: 16px;
-            margin: 10px 0;
+        /* Swap Arrow */
+        .swap-arrow {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 0 20px var(--accent-primary);
         }
 
-        input, select, textarea {
-            background: var(--bg-tertiary) !important;
-            color: var(--text-primary) !important;
+        .swap-arrow:hover {
+            transform: translate(-50%, -50%) rotate(180deg) scale(1.1);
+        }
+
+        .swap-arrow::before {
+            content: '⇄';
+            font-size: 20px;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        /* Chain Selectors */
+        .chain-selectors {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .chain-select {
+            flex: 1;
+            padding: 12px;
+            background: var(--input-bg);
             border: 2px solid var(--border-color);
             border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 35px;
         }
 
-        .chain-select:focus, #asset:focus, #withdrawAmount:focus, #solwallet:focus {
+        .chain-select:focus {
             outline: none;
             border-color: var(--accent-primary);
             box-shadow: 0 0 10px var(--shadow-color);
         }
 
         .chain-select option {
-            background: #1a1a2e;
+            background: var(--input-bg);
             color: var(--text-primary);
             padding: 10px;
-            border-bottom: 1px solid var(--border-color);
         }
 
-        .chain-select option:hover {
-            background: var(--accent-primary);
-            color: var(--bg-tertiary);
+        /* Input Fields */
+        .input-group {
+            margin-bottom: 20px;
         }
 
-        /* Custom Select Styling */
-        .chain-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b5ce73' stroke-width='2' stroke-linecap='round'[...]
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
-            padding-right: 45px;
-        }
-
-        .select-container, .withdraw-container, .input-container {
-            position: relative;
-            width: 100%;
-            margin: 15px 0;
-        }
-
-        .required, #select-label, #input-label {
-            position: absolute;
-            left: 15px;
-            top: -10px;
-            background: var(--bg-secondary);
-            padding: 0 8px;
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
             color: var(--text-secondary);
-            font-size: 12px;
             font-weight: bold;
+            font-size: 14px;
         }
 
-        .max-button {
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            opacity: 0.7;
+        }
+
+        /* Amount Input with MAX button */
+        .amount-container {
+            position: relative;
+        }
+
+        .max-btn {
             position: absolute;
-            right: 15px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
             color: var(--bg-tertiary);
             border: none;
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 15px;
             font-weight: bold;
             cursor: pointer;
@@ -494,39 +343,42 @@
             transition: all 0.3s ease;
         }
 
-        .max-button:hover {
+        .max-btn:hover {
             transform: translateY(-50%) scale(1.05);
         }
 
-        .balance {
-            text-align: center;
-            margin-top: 10px;
+        /* Balance Info */
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
             color: var(--text-secondary);
-            font-size: 14px;
         }
 
-        #swap-btn {
+        /* Swap Button */
+        .swap-btn {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
             color: var(--bg-tertiary);
             border: none;
-            border-radius: 25px;
-            font-size: 20px;
+            border-radius: 15px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px var(--shadow-color);
-            margin-top: 20px;
             position: relative;
             overflow: hidden;
         }
-        #swap-btn:hover {
+
+        .swap-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px var(--shadow-color);
         }
 
-        #swap-btn::before {
+        .swap-btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -537,56 +389,31 @@
             transition: left 0.5s ease;
         }
 
-        #swap-btn:hover::before {
+        .swap-btn:hover::before {
             left: 100%;
         }
 
         /* Footer */
-        footer {
+        .footer {
             background: var(--bg-tertiary);
             backdrop-filter: blur(10px);
-            padding: 20px 40px;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid var(--border-color);
-            margin-top: auto;
-            transition: all 0.5s ease;
+            font-size: 14px;
         }
 
-        footer a {
+        .footer a {
             color: var(--text-secondary);
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        footer a:hover {
+        .footer a:hover {
             color: var(--accent-secondary);
             text-shadow: 0 0 10px var(--shadow-color);
-        }
-
-        /* Toggle Buttons */
-        .toggle-button {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px 5px;
-            font-weight: bold;
-        }
-
-        .toggle-button:hover {
-            background: var(--accent-primary);
-            color: var(--bg-tertiary);
-            transform: translateY(-2px);
-        }
-
-        .toggle-button.active {
-            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-            color: var(--bg-tertiary);
         }
 
         /* Wallet Modal */
@@ -598,18 +425,14 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
         }
 
         .wallet-modal.show {
-            opacity: 1;
-            visibility: visible;
+            display: flex;
         }
 
         .wallet-modal-content {
@@ -620,8 +443,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             max-width: 400px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
             transform: scale(0.8);
             transition: all 0.3s ease;
         }
@@ -634,14 +455,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid var(--border-color);
         }
 
         .wallet-modal-title {
             color: var(--accent-primary);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
         }
 
@@ -685,6 +506,7 @@
             height: 32px;
             margin-right: 15px;
             border-radius: 8px;
+            object-fit: cover;
         }
 
         .wallet-name {
@@ -692,285 +514,69 @@
             font-size: 16px;
         }
 
-        /* Responsive */
+        /* Chain Animation */
+        .chain-switching {
+            animation: chainPulse 1s ease-in-out;
+        }
+
+        @keyframes chainPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px var(--accent-primary); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideOutUp {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+        }
+
+        .swap-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .notification {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-            }
-
-            #bridge-swap {
-                padding: 20px;
-                margin: 20px;
-            }
-
-            .main-container {
-                padding: 10px;
-            }
-
-            footer {
-                flex-direction: column;
                 gap: 15px;
+                padding: 15px 20px;
+            }
+
+            .bridge-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .chain-cards {
+                margin-bottom: 20px;
+            }
+
+            .chain-card {
+                width: 120px;
+                height: 90px;
+            }
+
+            .chain-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 10px;
                 text-align: center;
-            }
-        }
-
-        /* Efectos de partículas */
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent-primary);
-            opacity: 0.6;
-            border-radius: 50%;
-            animation: float-particle 15s linear infinite;
-            transition: all 0.5s ease;
-        }
-
-        /* Price Display Styles */
-        .price-display {
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .price-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .price-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            background: var(--bg-secondary);
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .price-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-
-        .price-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .price-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-        }
-
-        .price-symbol {
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-
-        .price-value {
-            font-weight: bold;
-            color: var(--accent-primary);
-        }
-
-        .price-change {
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: bold;
-        }
-
-        .price-change.positive {
-            background: rgba(76, 175, 80, 0.2);
-            color: #4caf50;
-        }
-
-        .price-change.negative {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
-        }
-
-        /* Advanced Settings Panel */
-        .settings-panel {
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .settings-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .settings-content {
-            display: none;
-            animation: slideDown 0.3s ease;
-        }
-
-        .settings-content.show {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .setting-row:last-child {
-            border-bottom: none;
-        }
-
-        .setting-label {
-            color: var(--text-secondary);
-            font-weight: bold;
-        }
-
-        .setting-value {
-            color: var(--accent-primary);
-            font-weight: bold;
-        }
-
-        /* Slippage Tolerance */
-        .slippage-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .slippage-btn {
-            padding: 8px 16px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .slippage-btn:hover, .slippage-btn.active {
-            background: var(--accent-primary);
-            color: var(--bg-tertiary);
-            border-color: var(--accent-primary);
-        }
-
-        .custom-slippage {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .slippage-input {
-            width: 80px;
-            padding: 8px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            text-align: center;
-        }
-
-        /* Gas Configuration */
-        .gas-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .gas-option {
-            padding: 15px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .gas-option:hover, .gas-option.active {
-            background: var(--accent-primary);
-            color: var(--bg-tertiary);
-            border-color: var(--accent-primary);
-        }
-
-        .gas-speed {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .gas-price {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .gas-time {
-            font-size: 11px;
-            margin-top: 5px;
-        }
-
-        /* Live Updates Indicator */
-        .live-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-primary);
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            background: #4caf50;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes float-particle {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
+                padding: 15px 20px;
             }
         }
     </style>
@@ -982,16 +588,8 @@
             <path d="M12 2.5c-.4 0-.8.2-1.1.5L9.5 4.4c-.2.2-.4.3-.7.3H7c-.6 0-1 .4-1 1v1.8c0 .3-.1.5-.3.7L4.3 9.1c-.3.3-.5.7-.5 1.1s.2.8.5 1.1l1.4 1.4c.2.2.3.4.3.7V15c0 .6.4 1 1 1h1.8c.3 0 .5.1.7.3l1.1 1.4c.3.3.7.5 1.1.5s.8-.2 1.1-.5l1.4-1.4c.2-.2.4-.3.7-.3H17c.6 0 1-.4 1-1v-1.8c0-.3.1-.5.3-.7l1.4-1.4c.3-.3.5-.7.5-1.1s-.2-.8-.5-1.1l-1.4-1.4c-.2-.2-.3-.4-.3-.7V5c0-.6-.4-1-1-1h-1.8c-.3 0-.5-.1-.7-.3L13.1 3c-.3-.3-.7-.5-1.1-.5z"/>
         </svg>
     </div>
-    <!-- Partículas flotantes -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
-    <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
-    <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+
+    <!-- Header -->
     <div class="header">
         <div class="logo-container">
             <img src="https://i.ibb.co/gZ3hKxQt/LOGO-YGCT-32-X32.png" alt="YageCoin Logo" class="logo">
@@ -999,517 +597,518 @@
         </div>
         <div>
             <p id="wallet-address"></p>
-            <button id="connect-wallet"><b>Connect Wallet</b></button>
-            <button id="disconnect-wallet" style="display: none;"><b>Disconnect Wallet</b></button>
+            <button id="connect-wallet">Connect Wallet</button>
+            <button id="disconnect-wallet" style="display: none;">Disconnect</button>
         </div>
     </div>
-    <div class="main-container">
-<div id="bridge-swap">
-    <h2>Send</h2>
-    <div class="content-container">
-        <div class="select-container">
-            <label>FROM</label>
-            <select id="from-chain" class="chain-select">
-                <option value="eth">Ethereum</option>
-                <option value="bsc">BSC</option>
-                <option value="sol">Solana</option>
-                <!-- más opciones... -->
-            </select>
-        </div>
-        <div class="select-container">
-            <label>TO</label>
-            <select id="to-chain" class="chain-select">
-                <option value="eth">Ethereum</option>
-                <option value="bsc">BSC</option>
-                <option value="sol">Solana</option>
-            </select>
-        </div>
-    </div>
-    <div class="input-container">
-        <label for="asset">Asset</label>
-        <input id="asset" type="text" readonly>
-    </div>
-    <div class="input-container" style="position:relative;">
-        <label for="amount">Amount</label>
-        <input id="amount" type="number" placeholder="0.00" style="padding-right:60px;">
-        <button id="max-btn" type="button" style="position:absolute;top:31px;right:10px;padding:6px 18px;font-size:14px;border-radius:8px;border:none;background:#b5ce73;color:#222;cursor:pointer;">MAX</button>
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:#b5ce73;margin-top:5px;">
-            <span id="minimum-info">Minimum: 0.1 ETH</span>
-            <span id="available-info">Available: 2.5 ETH</span>
-        </div>
-    </div>
-    <div class="input-container">
-        <label for="destination">Destination Address</label>
-        <input id="destination" type="text" placeholder="Enter address">
-    </div>
-    <button id="swap-btn" style="width:100%;padding:18px 0;font-size:18px;border-radius:15px;background:#b5ce73;color:#222;font-weight:bold;">Swap Bridge</button>
-</div>
-            <!-- BLOQUE SWAP PARA COPIAR Y PEGAR EN TU ARCHIVO index.html -->
 
-            <!-- 1. Reemplaza el bloque actual de los logos/cadenas/arrow por este: -->
-            <div class="swap-cards-row" style="margin-bottom:30px; position:relative;">
-                <!-- Card FROM -->
-                <div class="swap-card">
-                    <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" class="chain-logo" id="from-logo" style="width:60px; height:60px;">
-                    <div class="swap-card-label">FROM</div>
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="bridge-container">
+            <div class="bridge-title">Send</div>
+            
+            <!-- Chain Selection Cards -->
+            <div class="chain-cards">
+                <div class="chain-card">
+                    <img src="https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token-1.jpg" class="chain-logo" id="from-logo">
+                    <div class="chain-label">FROM</div>
                 </div>
-                <!-- Botón Flechas en el Centro -->
-                <div class="swap-center-btn">
-                    <button id="swap-arrow-btn">
-                        <span class="swap-arrow-icon">⇄</span>
-                    </button>
-                </div>
-                <!-- Card TO -->
-                <div class="swap-card">
-                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" class="chain-logo" id="to-logo" style="width:60px; height:60px;">
-                    <div class="swap-card-label">TO</div>
+                
+                <div class="swap-arrow" onclick="swapChains()"></div>
+                
+                <div class="chain-card">
+                    <img src="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png" class="chain-logo" id="to-logo">
+                    <div class="chain-label">TO</div>
                 </div>
             </div>
 
-            <!-- 2. Debajo, pon los selects para elegir cadena, con el color igual al de Asset -->
-            <div style="display:flex; gap:20px; margin-bottom:24px;">
+            <!-- Chain Selectors -->
+            <div class="chain-selectors">
                 <select id="from-chain" class="chain-select">
-                    <option value="bsc" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token-1.jpg">BSC</option>
-                    <option value="eth" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png">Ethereum</option>
-                    <option value="polygon" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png">Polygon</option>
-                    <option value="arbitrum" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/arbitrum.png">Arbitrum</option>
-                    <option value="fantom" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.png">Fantom</option>
-                    <option value="avalanche" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/avalanche.png">Avalanche</option>
-                    <option value="gnosis" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/gnosis.png">Gnosis</option>
-                    <option value="dot" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/dot.png">Dot</option>
-                    <option value="solana" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/solana-sol-logo-png.png">Solana</option>
-                    <option value="ton" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ton.png">Ton</option>
-                    <option value="sui" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/sui-e1755889223560.png">Sui</option>
-                    <option value="aptos" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/aptos.png">Aptos</option>
-                    <option value="ada" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo.jpg">Cardano</option>
-                    <option value="bitcoin" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/btc.png">Bitcoin</option>
-                    <option value="doge" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/doge.jpg">Doge</option>
-                    <option value="matic" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png">Matic</option>
-                    <option value="near" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/near.png">Near</option>
+                    <option value="bsc" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token-1.jpg">BSC (BNB)</option>
+                    <option value="eth" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png">Ethereum (ETH)</option>
+                    <option value="polygon" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png">Polygon (MATIC)</option>
+                    <option value="arbitrum" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/arbitrum.png">Arbitrum (ARB)</option>
+                    <option value="fantom" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.png">Fantom (FTM)</option>
+                    <option value="avalanche" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/avalanche.png">Avalanche (AVAX)</option>
+                    <option value="gnosis" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/gnosis.png">Gnosis (GNO)</option>
+                    <option value="dot" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/dot.png">Polkadot (DOT)</option>
+                    <option value="solana" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/solana-sol-logo-png.png">Solana (SOL)</option>
+                    <option value="ton" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ton.png">TON</option>
+                    <option value="sui" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/sui-e1755889223560.png">Sui (SUI)</option>
+                    <option value="aptos" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/aptos.png">Aptos (APT)</option>
+                    <option value="ada" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo.jpg">Cardano (ADA)</option>
+                    <option value="bitcoin" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/btc.png">Bitcoin (BTC)</option>
+                    <option value="doge" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/doge.jpg">Dogecoin (DOGE)</option>
+                    <option value="near" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/near.png">Near (NEAR)</option>
                 </select>
                 <select id="to-chain" class="chain-select">
-                    <option value="bsc" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token-1.jpg">BSC</option>
-                    <option value="eth" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png">Ethereum</option>
-                    <option value="polygon" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png">Polygon</option>
-                    <option value="arbitrum" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/arbitrum.png">Arbitrum</option>
-                    <option value="fantom" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.png">Fantom</option>
-                    <option value="avalanche" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/avalanche.png">Avalanche</option>
-                    <option value="gnosis" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/gnosis.png">Gnosis</option>
-                    <option value="dot" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/dot.png">Dot</option>
-                    <option value="solana" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/solana-sol-logo-png.png">Solana</option>
-                    <option value="ton" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ton.png">Ton</option>
-                    <option value="sui" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/sui-e1755889223560.png">Sui</option>
-                    <option value="aptos" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/aptos.png">Aptos</option>
-                    <option value="ada" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo.jpg">Cardano</option>
-                    <option value="bitcoin" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/btc.png">Bitcoin</option>
-                    <option value="doge" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/doge.jpg">Doge</option>
-                    <option value="matic" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png">Matic</option>
-                    <option value="near" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/near.png">Near</option>
+                    <option value="bsc" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token-1.jpg">BSC (BNB)</option>
+                    <option value="eth" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png" selected>Ethereum (ETH)</option>
+                    <option value="polygon" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png">Polygon (MATIC)</option>
+                    <option value="arbitrum" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/arbitrum.png">Arbitrum (ARB)</option>
+                    <option value="fantom" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.png">Fantom (FTM)</option>
+                    <option value="avalanche" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/avalanche.png">Avalanche (AVAX)</option>
+                    <option value="gnosis" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/gnosis.png">Gnosis (GNO)</option>
+                    <option value="dot" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/dot.png">Polkadot (DOT)</option>
+                    <option value="solana" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/solana-sol-logo-png.png">Solana (SOL)</option>
+                    <option value="ton" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/ton.png">TON</option>
+                    <option value="sui" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/sui-e1755889223560.png">Sui (SUI)</option>
+                    <option value="aptos" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/aptos.png">Aptos (APT)</option>
+                    <option value="ada" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo.jpg">Cardano (ADA)</option>
+                    <option value="bitcoin" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/btc.png">Bitcoin (BTC)</option>
+                    <option value="doge" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/doge.jpg">Dogecoin (DOGE)</option>
+                    <option value="near" data-logo="https://yagecoin.space/wp-content/uploads/2025/08/near.png">Near (NEAR)</option>
                 </select>
             </div>
 
-            <!-- 3. El campo Asset debajo (sin cambios, solo referencia para el color) -->
-            <div class="select-container">
-                <label class="required" for="asset">Asset</label>
-                <input id="asset" class="chain-select" value="Solana Token" readonly>
+            <!-- Asset Field -->
+            <div class="input-group">
+                <label class="input-label">Asset</label>
+                <input id="asset" class="input-field" type="text" value="Ethereum" readonly>
             </div>
 
-            <!-- 4. JS para cambiar logos según la selección -->
-            <script>
-                function updateLogo(selectId, imgId) {
-                    const selectElem = document.getElementById(selectId);
-                    const logoElem = document.getElementById(imgId);
-                    const selectedOption = selectElem.options[selectElem.selectedIndex];
-                    const logoUrl = selectedOption.getAttribute('data-logo');
-                    if (logoUrl) {
-                        logoElem.src = logoUrl;
-                        logoElem.style.display = 'block';
-                    } else {
-                        logoElem.style.display = 'none';
-                    }
-                }
-                // Actualiza el asset automáticamente según la moneda TO
-const toChain = document.getElementById('to-chain');
-const asset = document.getElementById('asset');
-const fromChain = document.getElementById('from-chain');
-const minimumInfo = document.getElementById('minimum-info');
-const availableInfo = document.getElementById('available-info');
-const amountInput = document.getElementById('amount');
-const maxBtn = document.getElementById('max-btn');
-
-// Ejemplo de datos por blockchain (pon tus valores reales)
-const chainAssets = {
-    'ETH': 'Ethereum',
-    'BSC': 'BNB',
-    'SOL': 'Solana'
-    'MATIC': 'polygon',
-    'ARB': 'arbitrum',
-    'FTM': 'fantom'
-    'AVAX': 'avalanche',
-    'GNO': 'gnosis',
-    'DOT': 'Polkadot '
-    'TON': 'The Open Network',
-    'SUI': 'Sui',
-    'APT': 'Aptos'
-    'Near': 'Near',
-    'ADA': 'Cardano',
-    'BTC': 'Bitcoin'
-    'DOGE': 'Dogecoin',
-    'MATIC': 'matic'    
-};
-const chainMinimums = {
-    ETH:    '0.01 ETH',         // Ethereum
-    BSC:    '0.02 BNB',         // Binance Smart Chain
-    SOL:    '0.05 SOL',         // Solana
-    MATIC:  '10 MATIC',         // Polygon
-    ARB:    '0.02 ARB',         // Arbitrum
-    FTM:    '1 FTM',            // Fantom
-    AVAX:   '0.05 AVAX',        // Avalanche
-    GNO:    '0.01 GNO',         // Gnosis
-    DOT:    '0.1 DOT',          // Polkadot
-    TON:    '0.5 TON',          // The Open Network
-    SUI:    '0.2 SUI',          // Sui
-    APT:    '0.1 APT',          // Aptos
-    NEAR:   '0.5 NEAR',         // Near
-    ADA:    '1 ADA',            // Cardano
-    BTC:    '0.0001 BTC',       // Bitcoin
-    DOGE:   '10 DOGE',          // Dogecoin
-};
-
-const chainAvailable = {
-    ETH:    '2.35 ETH',
-    BSC:    '5.10 BNB',
-    SOL:    '19.2 SOL',
-    MATIC:  '320 MATIC',
-    ARB:    '7.4 ARB',
-    FTM:    '65 FTM',
-    AVAX:   '4.7 AVAX',
-    GNO:    '0.15 GNO',
-    DOT:    '11.8 DOT',
-    TON:    '35 TON',
-    SUI:    '8.2 SUI',
-    APT:    '6.8 APT',
-    NEAR:   '12 NEAR',
-    ADA:    '120 ADA',
-    BTC:    '0.018 BTC',
-    DOGE:   '1800 DOGE',
-};
-
-function updateAsset() {
-    const to = toChain.value;
-    asset.value = chainAssets[to] || to.toUpperCase();
-}
-function updateInfo() {
-    const from = fromChain.value;
-    minimumInfo.textContent = 'Minimum: ' + (chainMinimums[from] || '0');
-    availableInfo.textContent = 'Available: ' + (chainAvailable[from] || '0');
-}
-toChain.addEventListener('change', updateAsset);
-fromChain.addEventListener('change', updateInfo);
-window.addEventListener('DOMContentLoaded', () => {
-    updateAsset();
-    updateInfo();
-});
-
-// MAX button funcionalidad
-maxBtn.onclick = () => {
-    const from = fromChain.value;
-    // Tomar solo el número, no el texto completo
-    const available = (chainAvailable[from] || '0').split(' ')[0];
-    amountInput.value = available;
-};
-                document.getElementById('from-chain').addEventListener('change', function() {
-                    updateLogo('from-chain', 'from-logo');
-                });
-                document.getElementById('to-chain').addEventListener('change', function() {
-                    updateLogo('to-chain', 'to-logo');
-                });
-                // Inicializar logos al cargar
-                updateLogo('from-chain', 'from-logo');
-                updateLogo('to-chain', 'to-logo');
-            </script>
-
-            <!-- 5. Estilo para el bloque swap-card y selects (añadir a tu CSS) -->
-            <style>
-            .swap-cards-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: relative;
-                margin-bottom: 30px;
-            }
-            .swap-card {
-                width: 160px;
-                height: 120px;
-                background: var(--bg-tertiary);
-                border: 2px solid var(--accent-primary);
-                border-radius: 15px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                position: relative;
-                box-shadow: 0 0 16px rgba(181,206,115,0.18);
-            }
-            .swap-card-label {
-                color: var(--accent-primary);
-                font-weight: bold;
-                margin-top: 8px;
-                font-size: 20px;
-            }
-            .swap-center-btn {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 10;
-            }
-            #swap-arrow-btn {
-                width: 58px;
-                height: 58px;
-                border-radius: 50%;
-                background: var(--bg-tertiary);
-                border: 2.5px solid var(--accent-primary);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 0 20px var(--accent-primary);
-                cursor: pointer;
-                transition: transform 0.3s;
-                animation: spinArrow 2s linear infinite;
-            }
-                #max-btn {
-    position: absolute;
-    top: 31px;
-    right: 10px;
-    padding: 6px 18px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: none;
-    background: #b5ce73;
-    color: #222;
-    cursor: pointer;
-}
-#swap-btn {
-    width: 100%;
-    padding: 18px 0;
-    font-size: 18px;
-    border-radius: 15px;
-    background: #b5ce73;
-    color: #222;
-    font-weight: bold;
-}
-            .swap-arrow-icon {
-                font-size: 28px;
-                color: var(--accent-primary);
-                font-weight: bold;
-            }
-            @keyframes spinArrow {
-                0% { transform: rotate(0deg);}
-                100% { transform: rotate(360deg);}
-            }
-
-            .chain-select {
-                width: 100%;
-                padding: 15px;
-                background: var(--bg-tertiary);
-                border: 2px solid var(--accent-primary);
-                border-radius: 10px;
-                color: var(--text-primary);
-                font-size: 16px;
-                margin: 10px 0;
-                box-shadow: 0 0 12px rgba(181,206,115,0.12);
-                transition: all 0.3s ease;
-            }
-            .chain-select:focus {
-                outline: none;
-                border-color: var(--accent-primary);
-                box-shadow: 0 0 10px var(--accent-primary);
-            }
-            .chain-select option {
-                background: var(--bg-tertiary);
-                color: var(--text-primary);
-                padding: 10px;
-                border-bottom: 1px solid var(--border-color);
-
-                .wallet-modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    display: none;
-    justify-content: center; align-items: center;
-    z-index: 9999;
-}
-
-.wallet-modal.show {
-    display: flex;
-}
-
-.wallet-modal-content {
-    background: var(--bg-secondary);
-    border-radius: 20px;
-    padding: 30px;
-    width: 350px;
-    max-width: 90vw;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-}
-
-.wallet-modal-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 15px;
-}
-
-.wallet-modal-title {
-    font-size: 22px;
-    color: var(--accent-primary);
-    font-weight: bold;
-}
-
-.wallet-close {
-    background: none; border: none;
-    font-size: 28px; color: var(--accent-primary);
-    cursor: pointer;
-}
-
-.wallet-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 0;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-
-.wallet-option:hover {
-    background: var(--accent-primary);
-    color: var(--bg-tertiary);
-}
-
-.wallet-logo {
-    width: 32px; height: 32px; border-radius: 8px;
-    background: #fff;
-}
-
-.wallet-name {
-    font-weight: bold; font-size: 15px;
-
-            }
-            </style>
-            <!-- Aquí siguen los campos extra (puedes agregar los que ya tiene tu bridge y todo lo que sigue) -->
-            <div class="select-container">
-                <label class="required" for="amount">Amount</label>
-                <input id="amount" class="chain-select" type="number" placeholder="0.00">
+            <!-- Amount Field -->
+            <div class="input-group">
+                <label class="input-label">Amount</label>
+                <div class="amount-container">
+                    <input id="amount" class="input-field" type="number" placeholder="0.00" style="padding-right: 60px;">
+                    <button class="max-btn" onclick="setMaxAmount()">MAX</button>
+                </div>
+                <div class="balance-info">
+                    <span id="minimum-info">Minimum: 0.02 BNB</span>
+                    <span id="available-info">Available: 5.10 BNB</span>
+                </div>
             </div>
-            <div class="select-container">
-                <label class="required" for="address">Destination Address</label>
-                <input id="address" class="chain-select" type="text" placeholder="Enter address">
+
+            <!-- Destination Address -->
+            <div class="input-group">
+                <label class="input-label">Destination Address</label>
+                <input id="destination" class="input-field" type="text" placeholder="Enter address">
             </div>
-            <button id="swap-btn">Swap</button>
+
+            <!-- Swap Button -->
+            <button class="swap-btn" onclick="executeSwap()">Swap Bridge</button>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer>
-        <div>
-            YageCoin Bridge &copy; 2025
-        </div>
+    <div class="footer">
+        <div>YageCoin Bridge © 2025</div>
         <div>
             <a href="https://yagecoin.space/" target="_blank">YageCoin Exchange</a>
         </div>
-    </footer>
+    </div>
 
-    <!-- Aquí sigue el resto de tu JS original y scripts del bridge -->
+    <!-- Wallet Modal -->
+    <div id="wallet-modal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="wallet-modal-header">
+                <div class="wallet-modal-title">Connect a wallet</div>
+                <button class="wallet-close" onclick="closeWalletModal()">×</button>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('WalletConnect')">
+                <img src="https://yagecoin.space/wp-content/uploads/2025/08/walletconect.jpg" class="wallet-logo" alt="WalletConnect" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">WalletConnect</div>
+            </div>
+           <div class="wallet-option" onclick="connectWallet('Injected Wallet')">
+                <img src="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png" class="wallet-logo" alt="Injected Wallet" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Injected Wallet</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('MetaMask')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="wallet-logo" alt="MetaMask" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">MetaMask</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('Install Rabby Wallet')">
+                <img src="https://rabby.io/assets/images/logo-128.png" class="wallet-logo" alt="Rabby Wallet" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Install Rabby Wallet</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('Install Nightly')">
+                <img src="https://yagecoin.space/wp-content/uploads/2025/08/nigtly-wallet.png" class="wallet-logo" alt="Nightly" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Install Nightly</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('Install Coinbase Wallet')">
+                <img src="https://yagecoin.space/wp-content/uploads/2025/08/coin-base-wallet.png" class="wallet-logo" alt="Coinbase Wallet" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Install Coinbase Wallet</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('Install Backpack')">
+                <img src="https://backpack.app/favicon.ico" class="wallet-logo" alt="Backpack" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Install Backpack</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('Install Phantom')">
+                <img src="https://yagecoin.space/wp-content/uploads/2025/08/phanton-wallet.jpg" class="wallet-logo" alt="Phantom" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Install Phantom</div>
+            </div>
+            <div class="wallet-option" onclick="connectWallet('Install OKX Wallet')">
+                <img src="https://yagecoin.space/wp-content/uploads/2025/08/okx-wallet.png" class="wallet-logo" alt="OKX Wallet" onerror="this.style.background='#1e3a8a'">
+                <div class="wallet-name">Install OKX Wallet</div>
+            </div>
+        </div>
+    </div>
+
     <script>
-    // Ejemplo: función para el theme toggle
-    function toggleTheme() {
-        const body = document.body;
-        if (body.getAttribute('data-theme') === 'light') {
-            body.removeAttribute('data-theme');
-        } else {
-            body.setAttribute('data-theme', 'light');
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'light');
+            }
         }
-    }
-        
-    // Aquí puedes seguir pegando el resto de tus scripts JS de bridge, wallet y funcionalidad...
 
-    // ... (continúan scripts de tu archivo original, funciones de wallet, bridge, etc)
-    </script>
-</body>
-</html>
-    <!-- Scripts y funciones JS del bridge (continúa aquí el contenido original) -->
-
-    <script>
-    // Aquí puedes seguir añadiendo tus scripts originales, por ejemplo:
-    // Función para conectar el wallet, manejo de eventos del bridge, etc.
-
-    // Ejemplo: Mostrar dirección de wallet conectada
-    function showWalletAddress(address) {
-        document.getElementById('wallet-address').innerText = address;
-        document.getElementById('connect-wallet').style.display = 'none';
-        document.getElementById('disconnect-wallet').style.display = 'inline-block';
-    }
-
-    // Ejemplo: Desconectar wallet
-    document.getElementById('disconnect-wallet').onclick = function() {
-        document.getElementById('wallet-address').innerText = '';
-        document.getElementById('connect-wallet').style.display = 'inline-block';
-        document.getElementById('disconnect-wallet').style.display = 'none';
-    };
-
-    // ... Aquí sigue el resto de tu JS original, funciones, animaciones, etc.
-
-    // Puedes continuar pegando aquí el contenido JS, HTML, funciones, modales o paneles de tu archivo original,
-    // hasta llegar al final del archivo (más de 1800 líneas).
-    </script>
-</body>
-</html>
-    <!-- Ejemplo de continuación de tu bridge, transacciones, paneles, etc -->
-    <!-- Puedes añadir aquí los paneles, secciones o scripts que ya tenía tu archivo original. -->
-
-   
-
-    <!-- Continúan paneles, scripts y contenido original del archivo (más ejemplos y estructura para llegar a 1800+) -->
-
-    <!-- Panel de ayuda / FAQ -->
-    <div class="content-container" style="margin-top:30px;">
-        <h3 style="color:var(--accent-primary);margin-bottom:12px;">Preguntas frecuentes</h3>
-        <ul style="color:var(--text-primary);font-size:16px;">
-            <li><b>¿Qué es YageCoin Bridge?</b> Es un puente multichain para transferir y swap tokens entre cadenas.</li>
-            <li><b>¿Qué redes soporta?</b> BSC, ETH, Polygon, Solana, Arbitrum, Fantom, Avalanche, Gnosis, TON, Bitcoin.</li>
-            <li><b>¿Necesito wallet?</b> Sí, conecta tu wallet usando el botón "Connect Wallet".</li>
-            <li><b>¿Cuánto demora?</b> Depende del gas y la congestión de la red elegida.</li>
-            <li><b>¿Cuáles son las comisiones?</b> Consulta el panel de fee calculator para ver las comisiones actuales.</li>
-            <li><b>¿Cómo veo el historial?</b> El panel de historial muestra tus swaps recientes.</li>
-        </ul>
-    </div>
-
-    <!-- Panel de advertencias (ejemplo) -->
-    <div class="content-container" style="margin-top:20px;background:rgba(221,44,44,0.12);border:2px solid #e57373;">
-        <h3 style="color:#e57373;margin-bottom:12px;">Advertencia</h3>
-        <p style="color:var(--text-primary);font-size:16px;">
-            Recuerda revisar bien la dirección de destino antes de hacer el swap. Las transacciones en blockchain son irreversibles.
-        </p>
-    </div>
-
-    <!-- Scripts adicionales / ejemplo para paneles dinámicos -->
-    <script>
-    // Ejemplo: Mostrar/ocultar panel de ajustes avanzados
-    document.querySelectorAll('.settings-header').forEach(function(el) {
-        el.onclick = function() {
-            var panel = el.nextElementSibling;
-            panel.classList.toggle('show');
+        // Updated Chain data with correct mapping
+        const chainData = {
+            'bsc': {
+                name: 'BNB',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/Binance-Smart-Chain-BSCBNB-Token-1.jpg',
+                minimum: '0.02 BNB',
+                available: '5.10 BNB'
+            },
+            'eth': {
+                name: 'Ethereum',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png',
+                minimum: '0.01 ETH',
+                available: '2.35 ETH'
+            },
+            'polygon': {
+                name: 'Polygon',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/png-polygon.png',
+                minimum: '10 MATIC',
+                available: '320 MATIC'
+            },
+            'arbitrum': {
+                name: 'Arbitrum',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/arbitrum.png',
+                minimum: '0.02 ARB',
+                available: '7.4 ARB'
+            },
+            'fantom': {
+                name: 'Fantom',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/logo-fantom.png',
+                minimum: '1 FTM',
+                available: '65 FTM'
+            },
+            'avalanche': {
+                name: 'Avalanche',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/avalanche.png',
+                minimum: '0.05 AVAX',
+                available: '4.7 AVAX'
+            },
+            'gnosis': {
+                name: 'Gnosis',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/gnosis.png',
+                minimum: '0.01 GNO',
+                available: '0.15 GNO'
+            },
+            'dot': {
+                name: 'Polkadot',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/dot.png',
+                minimum: '0.1 DOT',
+                available: '11.8 DOT'
+            },
+            'solana': {
+                name: 'Solana',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/solana-sol-logo-png.png',
+                minimum: '0.05 SOL',
+                available: '19.2 SOL'
+            },
+            'ton': {
+                name: 'The Open Network',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/ton.png',
+                minimum: '0.5 TON',
+                available: '35 TON'
+            },
+            'sui': {
+                name: 'Sui',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/sui-e1755889223560.png',
+                minimum: '0.2 SUI',
+                available: '8.2 SUI'
+            },
+            'aptos': {
+                name: 'Aptos',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/aptos.png',
+                minimum: '0.1 APT',
+                available: '6.8 APT'
+            },
+            'ada': {
+                name: 'Cardano',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/cardano-icon-logo.jpg',
+                minimum: '1 ADA',
+                available: '120 ADA'
+            },
+            'bitcoin': {
+                name: 'Bitcoin',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/btc.png',
+                minimum: '0.0001 BTC',
+                available: '0.018 BTC'
+            },
+            'doge': {
+                name: 'Dogecoin',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/doge.jpg',
+                minimum: '10 DOGE',
+                available: '1800 DOGE'
+            },
+            'near': {
+                name: 'Near',
+                logo: 'https://yagecoin.space/wp-content/uploads/2025/08/near.png',
+                minimum: '0.5 NEAR',
+                available: '12 NEAR'
+            }
         };
-    });
 
-    // Ejemplo: Manejo de botón swap
-    document.getElementById('swap-btn').onclick = function() {
-        alert('¡Swap enviado! Este es un ejemplo, integra aquí la lógica real de swap.');
-    };
+        // Update logo when chain is selected
+        function updateLogo(selectId, imgId) {
+            const selectElem = document.getElementById(selectId);
+            const logoElem = document.getElementById(imgId);
+            const selectedChain = selectElem.value;
+            const chainInfo = chainData[selectedChain];
+            
+            if (chainInfo && chainInfo.logo) {
+                logoElem.src = chainInfo.logo;
+                logoElem.classList.add('chain-switching');
+                setTimeout(() => logoElem.classList.remove('chain-switching'), 1000);
+                
+                // Add error handling for logo
+                logoElem.onerror = function() {
+                    this.style.background = '#1e3a8a';
+                    this.style.color = 'white';
+                    this.innerHTML = selectedChain.toUpperCase().substring(0, 3);
+                };
+            }
+        }
 
-    // ... aquí puedes seguir pegando JS original o personalizado de tu archivo bridge ...
+        // Update asset and info based on selected chains
+        function updateAssetAndInfo() {
+            const fromChain = document.getElementById('from-chain').value;
+            const toChain = document.getElementById('to-chain').value;
+            
+            const fromChainInfo = chainData[fromChain];
+            const toChainInfo = chainData[toChain];
+            
+            if (toChainInfo) {
+                document.getElementById('asset').value = toChainInfo.name;
+            }
+            
+            if (fromChainInfo) {
+                document.getElementById('minimum-info').textContent = 'Minimum: ' + fromChainInfo.minimum;
+                document.getElementById('available-info').textContent = 'Available: ' + fromChainInfo.available;
+            }
+        }
+
+        // Set maximum amount
+        function setMaxAmount() {
+            const fromChain = document.getElementById('from-chain').value;
+            const chainInfo = chainData[fromChain];
+            if (chainInfo) {
+                const available = chainInfo.available.split(' ')[0];
+                document.getElementById('amount').value = available;
+            }
+        }
+
+        // Swap chains
+        function swapChains() {
+            const fromChain = document.getElementById('from-chain');
+            const toChain = document.getElementById('to-chain');
+            
+            const tempValue = fromChain.value;
+            fromChain.value = toChain.value;
+            toChain.value = tempValue;
+            
+            updateLogo('from-chain', 'from-logo');
+            updateLogo('to-chain', 'to-logo');
+            updateAssetAndInfo();
+        }
+
+        // Wallet functions
+        function showWalletModal() {
+            document.getElementById('wallet-modal').classList.add('show');
+        }
+
+        function closeWalletModal() {
+            document.getElementById('wallet-modal').classList.remove('show');
+        }
+
+        // Enhanced wallet connection with real wallet detection
+        async function connectWallet(walletType) {
+            try {
+                let account = null;
+                
+                if (walletType === 'MetaMask') {
+                    if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
+                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        account = accounts[0];
+                    } else {
+                        showNotification('MetaMask not installed', 'error');
+                        return;
+                    }
+                } else if (walletType === 'WalletConnect') {
+                    // Simulate WalletConnect
+                    account = '0x' + Math.random().toString(16).substr(2, 40);
+                } else if (walletType === 'Install Phantom') {
+                    if (typeof window.solana !== 'undefined' && window.solana.isPhantom) {
+                        const response = await window.solana.connect();
+                        account = response.publicKey.toString();
+                    } else {
+                        showNotification('Phantom not installed', 'error');
+                        return;
+                    }
+                } else if (walletType === 'Injected Wallet') {
+                    if (typeof window.ethereum !== 'undefined') {
+                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        account = accounts[0];
+                    } else {
+                        showNotification('No injected wallet found', 'error');
+                        return;
+                    }
+                } else {
+                    // For install options, simulate connection
+                    account = '0x' + Math.random().toString(16).substr(2, 40);
+                }
+                
+                if (account) {
+                    const displayAddress = account.length > 10 
+                        ? account.substring(0, 6) + '...' + account.substring(account.length - 4)
+                        : account;
+                    
+                    document.getElementById('wallet-address').textContent = displayAddress;
+                    document.getElementById('connect-wallet').style.display = 'none';
+                    document.getElementById('disconnect-wallet').style.display = 'inline-block';
+                    closeWalletModal();
+                    showNotification(`Connected to ${walletType}`, 'success');
+                } else {
+                    showNotification(`Failed to connect to ${walletType}`, 'error');
+                }
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                if (error.code === 4001) {
+                    showNotification('Connection rejected by user', 'error');
+                } else {
+                    showNotification(`Error connecting to ${walletType}`, 'error');
+                }
+            }
+        }
+
+        function disconnectWallet() {
+            document.getElementById('wallet-address').textContent = '';
+            document.getElementById('connect-wallet').style.display = 'inline-block';
+            document.getElementById('disconnect-wallet').style.display = 'none';
+            showNotification('Wallet disconnected', 'info');
+        }
+
+        // Execute swap
+        function executeSwap() {
+            const amount = document.getElementById('amount').value;
+            const destination = document.getElementById('destination').value;
+            const fromChain = document.getElementById('from-chain').value;
+            const toChain = document.getElementById('to-chain').value;
+
+            if (!amount || !destination) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (!document.getElementById('wallet-address').textContent) {
+                showWalletModal();
+                return;
+            }
+
+            if (fromChain === toChain) {
+                showNotification('Please select different source and destination chains', 'error');
+                return;
+            }
+
+            // Validate minimum amount
+            const fromChainInfo = chainData[fromChain];
+            if (fromChainInfo) {
+                const minAmount = parseFloat(fromChainInfo.minimum.split(' ')[0]);
+                if (parseFloat(amount) < minAmount) {
+                    showNotification(`Minimum amount is ${fromChainInfo.minimum}`, 'error');
+                    return;
+                }
+            }
+
+            // Simulate swap process
+            const swapBtn = document.querySelector('.swap-btn');
+            swapBtn.textContent = 'Processing...';
+            swapBtn.disabled = true;
+
+            setTimeout(() => {
+                swapBtn.textContent = 'Swap Bridge';
+                swapBtn.disabled = false;
+                showNotification('Bridge transaction completed successfully!', 'success');
+                
+                // Clear form
+                document.getElementById('amount').value = '';
+                document.getElementById('destination').value = '';
+            }, 3000);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 25px;
+                font-weight: bold;
+                z-index: 10000;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                animation: slideInDown 0.3s ease;
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutUp 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Event listeners
+        document.getElementById('from-chain').addEventListener('change', function() {
+            updateLogo('from-chain', 'from-logo');
+            updateAssetAndInfo();
+        });
+
+        document.getElementById('to-chain').addEventListener('change', function() {
+            updateLogo('to-chain', 'to-logo');
+            updateAssetAndInfo();
+        });
+
+        document.getElementById('connect-wallet').addEventListener('click', showWalletModal);
+        document.getElementById('disconnect-wallet').addEventListener('click', disconnectWallet);
+
+        // Close modal when clicking outside
+        document.getElementById('wallet-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWalletModal();
+            }
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            updateLogo('from-chain', 'from-logo');
+            updateLogo('to-chain', 'to-logo');
+            updateAssetAndInfo();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeWalletModal();
+            }
+            if (e.ctrlKey && e.key === 'Enter') {
+                executeSwap();
+            }
+        });
     </script>
-
 </body>
 </html>
