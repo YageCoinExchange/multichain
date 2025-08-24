@@ -17,6 +17,18 @@
             --border-color: rgba(181, 206, 115, 0.3);
             --shadow-color: rgba(181, 206, 115, 0.4);
         }
+       body[data-theme="light"] {
+    --bg-primary: linear-gradient(135deg, #f5faff 0%, #f7ffe6 100%);
+    --bg-secondary: rgba(255,255,255,0.95);
+    --bg-tertiary: rgba(230,245,220,0.9);
+    --input-bg: #fff;
+    --accent-primary: #346d6c;
+    --accent-secondary: #55a273;
+    --text-primary: #1a1a1a;
+    --text-secondary: #346d6c;
+    --border-color: rgba(52, 109, 108, 0.2);
+    --shadow-color: rgba(52, 109, 108, 0.12);
+}
 
         * {
             margin: 0;
@@ -479,17 +491,24 @@ body[data-theme="light"] .moon-icon {
             display: flex;
         }
 
-        .wallet-modal-content {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            max-width: 400px;
-            width: 90%;
-            transform: scale(0.8);
-            transition: all 0.3s ease;
-        }
+.wallet-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+/* Forzar lista vertical */
+.wallet-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+    flex-direction: row;
+}
+.wallet-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
         .wallet-modal.show .wallet-modal-content {
             transform: scale(1);
@@ -809,11 +828,9 @@ body[data-theme="light"] .moon-icon {
     </div>
 
     <script>
-// Theme Toggle
 function toggleTheme() {
     const body = document.body;
     const currentTheme = body.getAttribute('data-theme');
-    
     if (currentTheme === 'light') {
         body.removeAttribute('data-theme');
         localStorage.setItem('theme', 'dark');
@@ -821,6 +838,8 @@ function toggleTheme() {
         body.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
     }
+    // Forzar repaint (algunos navegadores)
+    body.offsetHeight;
 }
 
 // Initialize theme on page load
@@ -830,6 +849,9 @@ function initializeTheme() {
         document.body.setAttribute('data-theme', 'light');
     }
 }
+window.onload = function() {
+    initializeTheme();
+};
         // Chain data with network IDs for Web3 integration
         const chainData = {
             'bsc': {
