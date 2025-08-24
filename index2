@@ -505,9 +505,7 @@ body[data-theme="light"] .moon-icon {
     flex-direction: row;
 }
 .wallet-options-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 6px;
 }
 
         .wallet-modal.show .wallet-modal-content {
@@ -548,14 +546,15 @@ body[data-theme="light"] .moon-icon {
 .wallet-option {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 8px 14px;
     background: var(--bg-tertiary);
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     border: 1px solid transparent;
     width: 100%;
+    min-height: 36px;
 }
 
         .wallet-option:hover {
@@ -565,17 +564,17 @@ body[data-theme="light"] .moon-icon {
             border-color: var(--accent-secondary);
         }
 
-        .wallet-logo {
-            width: 32px;
-            height: 32px;
-            margin-right: 15px;
-            border-radius: 8px;
-            object-fit: cover;
+.wallet-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 6px;
+    object-fit: cover;
         }
 
         .wallet-name {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         /* Chain Animation */
@@ -782,50 +781,50 @@ body[data-theme="light"] .moon-icon {
 
     <!-- Wallet Modal -->
     <div id="wallet-modal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="wallet-modal-header">
-                <div class="wallet-modal-title">Connect a wallet</div>
-                <button class="wallet-close" onclick="closeWalletModal()">×</button>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('WalletConnect')">
-                <img src="https://yagecoin.space/wp-content/uploads/2025/08/walletconect.jpg" class="wallet-logo" alt="WalletConnect" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">WalletConnect</div>
-            </div>
-           <div class="wallet-option" onclick="connectWallet('Injected Wallet')">
-                <img src="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png" class="wallet-logo" alt="Injected Wallet" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Injecte
-<div class="wallet-name">Injected Wallet</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('MetaMask')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="wallet-logo" alt="MetaMask" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">MetaMask</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('Install Rabby Wallet')">
-                <img src="https://rabby.io/assets/images/logo-128.png" class="wallet-logo" alt="Rabby Wallet" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Install Rabby Wallet</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('Install Nightly')">
-                <img src="https://yagecoin.space/wp-content/uploads/2025/08/nigtly-wallet.png" class="wallet-logo" alt="Nightly" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Install Nightly</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('Install Coinbase Wallet')">
-                <img src="https://yagecoin.space/wp-content/uploads/2025/08/coin-base-wallet.png" class="wallet-logo" alt="Coinbase Wallet" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Install Coinbase Wallet</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('Install Backpack')">
-                <img src="https://backpack.app/favicon.ico" class="wallet-logo" alt="Backpack" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Install Backpack</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('Install Phantom')">
-                <img src="https://yagecoin.space/wp-content/uploads/2025/08/phanton-wallet.jpg" class="wallet-logo" alt="Phantom" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Install Phantom</div>
-            </div>
-            <div class="wallet-option" onclick="connectWallet('Install OKX Wallet')">
-                <img src="https://yagecoin.space/wp-content/uploads/2025/08/okx-wallet.png" class="wallet-logo" alt="OKX Wallet" onerror="this.style.background='#1e3a8a'">
-                <div class="wallet-name">Install OKX Wallet</div>
-            </div>
-        </div>
+<div class="wallet-modal-content">
+  <div class="wallet-modal-header">
+    <div class="wallet-modal-title">Connect a wallet</div>
+    <button class="wallet-close" onclick="closeWalletModal()">×</button>
+  </div>
+  <div class="wallet-options-list">
+    <div class="wallet-option" onclick="connectWallet('WalletConnect')">
+      <img src="https://yagecoin.space/wp-content/uploads/2025/08/walletconect.jpg" class="wallet-logo" alt="WalletConnect" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">WalletConnect</div>
     </div>
+    <div class="wallet-option" onclick="connectWallet('Injected Wallet')">
+      <img src="https://yagecoin.space/wp-content/uploads/2025/08/ethereum.png" class="wallet-logo" alt="Injected Wallet" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Injected Wallet</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('MetaMask')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="wallet-logo" alt="MetaMask" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">MetaMask</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('Install Rabby Wallet')">
+      <img src="https://rabby.io/assets/images/logo-128.png" class="wallet-logo" alt="Rabby Wallet" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Install Rabby Wallet</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('Install Nightly')">
+      <img src="https://yagecoin.space/wp-content/uploads/2025/08/nigtly-wallet.png" class="wallet-logo" alt="Nightly" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Install Nightly</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('Install Coinbase Wallet')">
+      <img src="https://yagecoin.space/wp-content/uploads/2025/08/coin-base-wallet.png" class="wallet-logo" alt="Coinbase Wallet" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Install Coinbase Wallet</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('Install Backpack')">
+      <img src="https://backpack.app/favicon.ico" class="wallet-logo" alt="Backpack" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Install Backpack</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('Install Phantom')">
+      <img src="https://yagecoin.space/wp-content/uploads/2025/08/phanton-wallet.jpg" class="wallet-logo" alt="Phantom" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Install Phantom</div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('Install OKX Wallet')">
+      <img src="https://yagecoin.space/wp-content/uploads/2025/08/okx-wallet.png" class="wallet-logo" alt="OKX Wallet" onerror="this.style.background='#1e3a8a'">
+      <div class="wallet-name">Install OKX Wallet</div>
+    </div>
+  </div>
+</div>
 
     <script>
 function toggleTheme() {
